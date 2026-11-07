@@ -1,0 +1,234 @@
+---
+import { getEntries, getEntry, render } from 'astro:content';
+import Star from '@lucide/astro/icons/star';
+import Download from '@lucide/astro/icons/download';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PromptBlock from '../../components/PromptBlock.astro';
+import PromptCard from '../../components/PromptCard.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import Pills from '../../components/Pills.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import VideoLinks from '../../components/VideoLinks.astro';
+import { categoryLabel, getPrompts, relatedPrompts, toolLabel, type Prompt } from '../../utils/content';
+import { absolute, paths } from '../../utils/urls';
+
+export async function getStaticPaths() {
+  const prompts = await getPrompts();
+  return prompts.map((prompt) => ({ params: { slug: prompt.id }, props: { prompt } }));
+}
+
+interface Props {
+  prompt: Prompt;
+}
+const { prompt } = Astro.props;
+const d = prompt.data;
+const { Content } = await render(prompt);
+const all = await getPrompts();
+const related = relatedPrompts(prompt, all, 3);
+const episodes = (await getEntries(d.relatedEpisodes)).filter((e) => e.data.status === 'published');
+const resource = d.resource ? await getEntry(d.resource) : undefined;
+const track = {
+  prompt_id: prompt.id,
+  prompt_title: d.title,
+  category: d.category,
+  tool: d.tools.join(','),
+};
+const toolsText = d.tools.map(toolLabel).join(', ');
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: d.title,
+    description: d.description,
+    url: absolute(paths.prompt(prompt.id), Astro.site),
+    text: d.prompt,
+    inLanguage: d.promptLang,
+    isAccessibleForFree: true,
+    genre: categoryLabel(d.category),
+    educationalLevel: d.difficulty,
+    publisher: { '@type': 'Organization', name: 'Jajati AI' },
+  },
+];
+---
+
+<BaseLayout
+  title={d.seoTitle ?? d.title}
+  description={d.description}
+  ogImage={resource?.data.ogImage}
+  breadcrumbs={[{ label: 'Prompts', href: '/prompts/' }, { label: d.title }]}
+  jsonLd={jsonLd}
+  pageType="prompt"
+>
+  <article class="container-ja pt-6 md:pt-10">
+    <header class="max-w-3xl">
+      <Pills category={d.category} tools={d.tools} difficulty={d.difficulty} />
+      <h1 class="mt-4 text-3xl font-extrabold md:text-4xl">{d.title}</h1>
+      <p class="mt-3 text-lg text-muted">{d.description}</p>
+    </header>
+
+    <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start">
+      <div class="grid gap-6">
+        <section aria-labelledby="problem-title" class="card border-l-4 border-l-cyan p-4 md:p-5">
+          <h2 id="problem-title" class="eyebrow">The problem it solves</h2>
+          <p class="mt-2">{d.problem}</p>
+        </section>
+
+        <section aria-labelledby="prompt-title">
+          <h2 id="prompt-title" class="sr-only">The prompt</h2>
+          <PromptBlock id={prompt.id} text={d.prompt} lang={d.promptLang} track={{ ...track, link_location: 'prompt_page' }} />
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              class="btn btn-secondary btn-small"
+              data-fav={prompt.id}
+              aria-pressed="false"
+              data-track-params={JSON.stringify(track)}
+            >
+              <Star size={18} aria-hidden="true" />
+              <span data-label>Save</span>
+            </button>
+            <ShareButtons title={d.title} text={`Free prompt: ${d.title}`} track={track} />
+          </div>
+          <p class="mt-2 text-xs text-muted" data-needs-storage>
+            Saved prompts stay in this browser only (not synced between devices).
+          </p>
+        </section>
+
+        <section aria-labelledby="tool-title">
+          <h2 id="tool-title" class="text-xl font-bold">Suitable AI tool</h2>
+          <p class="mt-2">{toolsText}</p>
+        </section>
+
+        {
+          d.placeholders.length > 0 && (
+            <section aria-labelledby="fill-title">
+              <h2 id="fill-title" class="text-xl font-bold">
+                Fill these in
+              </h2>
+              <dl class="mt-3 grid gap-3">
+                {d.placeholders.map((ph) => (
+                  <div class="card p-4">
+                    <dt class="font-semibold text-cyan-soft" lang={d.promptLang}>
+                      {ph.token}
+                    </dt>
+                    <dd class="mt-1 text-[0.95rem]">{ph.meaning}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )
+        }
+
+        <section class="prose-ja" aria-label="How to use it">
+          <Content />
+        </section>
+
+        {
+          d.exampleInput && (
+            <section aria-labelledby="example-title">
+              <h2 id="example-title" class="text-xl font-bold">
+                Example input
+              </h2>
+              <p class="mt-1 text-sm text-muted">{d.exampleInput.note}</p>
+              <PromptBlock
+                id={`${prompt.id}-example`}
+                text={d.exampleInput.text}
+                lang={d.promptLang}
+                label="Example"
+                class="mt-3"
+                track={{ ...track, link_location: 'prompt_example' }}
+              />
+            </section>
+          )
+        }
+
+        <section aria-labelledby="output-title">
+          <h2 id="output-title" class="text-xl font-bold">Example output</h2>
+          {
+            d.exampleOutput ? (
+              <>
+                <p class="mt-1 text-sm text-muted">{d.exampleOutput.note}</p>
+                <pre class="prompt-text mt-3">{d.exampleOutput.text}</pre>
+              </>
+            ) : (
+              <p class="mt-2 text-muted">
+                No saved output yet. We only publish real outputs, and AI answers change from run to run, so try it
+                and see what you get.
+              </p>
+            )
+          }
+        </section>
+
+        <section aria-labelledby="source-title" class="text-sm text-muted">
+          <h2 id="source-title" class="font-semibold text-text">Source</h2>
+          <p class="mt-1">
+            {d.source.label}
+            {d.source.note && <span> {d.source.note}</span>}
+          </p>
+        </section>
+      </div>
+
+      <aside class="grid gap-4" aria-label="More about this prompt">
+        {
+          resource && (
+            <div class="card p-4 md:p-5">
+              <p class="eyebrow">Part of a free sheet</p>
+              <p class="mt-2 font-bold">{resource.data.shortTitle}</p>
+              <p class="mt-1 text-sm text-muted">Download the full sheet as PDF or phone images.</p>
+              <a href={paths.resource(resource.id)} class="btn btn-primary btn-small mt-3">
+                <Download size={18} aria-hidden="true" />
+                Get the {resource.data.keyword} sheet
+              </a>
+            </div>
+          )
+        }
+        {
+          (d.video.youtube || d.video.instagram) && (
+            <div class="card p-4 md:p-5">
+              <p class="eyebrow">Watch it explained</p>
+              <div class="mt-3">
+                <VideoLinks youtube={d.video.youtube} instagram={d.video.instagram} track={track} location="prompt_page" />
+              </div>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+
+    {
+      episodes.length > 0 && (
+        <section class="mt-14" aria-labelledby="learn-title">
+          <h2 id="learn-title" class="text-2xl font-bold">
+            Related learning
+          </h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {episodes.map((e) => (
+              <EpisodeCard episode={e} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      related.length > 0 && (
+        <section class="mt-14" aria-labelledby="related-title">
+          <h2 id="related-title" class="text-2xl font-bold">
+            Related prompts
+          </h2>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((p) => (
+              <li class="contents">
+                <PromptCard prompt={p} />
+              </li>
+            ))}
+          </ul>
+          <p class="mt-6">
+            <a href={`/prompts/?category=${d.category}`}>More {categoryLabel(d.category)} prompts</a>
+          </p>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>

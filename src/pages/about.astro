@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, SOCIAL } from '../data/site';
+---
+
+<BaseLayout
+  title="About Jajati AI"
+  description="Jajati AI makes the AI Explained series: practical AI, better prompts and AI concepts explained in simple Hindi, on Instagram and YouTube."
+  breadcrumbs={[{ label: 'About' }]}
+  pageType="about"
+>
+  <article class="container-ja max-w-3xl pt-6 md:pt-10">
+    <h1 class="text-3xl font-extrabold md:text-5xl">About Jajati AI</h1>
+    <div class="prose-ja mt-6">
+      <p class="text-lg">{SITE.positioning}</p>
+      <p>
+        Jajati AI is a creator project. It makes <strong>AI Explained</strong>, a series of short videos in Hinglish on
+        <a href={SOCIAL.instagram.url} rel="noopener">Instagram ({SOCIAL.instagram.handle})</a> and
+        <a href={SOCIAL.youtube.url} rel="noopener">YouTube ({SOCIAL.youtube.handle})</a>. Each episode explains one AI
+        idea (tokens, context windows, hallucinations, RAG, prompt engineering) and ends with something you can try the
+        same day.
+      </p>
+      <h2>Why this website exists</h2>
+      <p>
+        People comment a keyword on a reel to get a prompt sheet. Instagram does not always let those messages through,
+        so this site is the reliable place for every free resource: open it, copy the prompt, download the sheet. No
+        login, no DM, no follow needed.
+      </p>
+      <h2>How the content is made</h2>
+      <ul>
+        <li>Prompts come from the published cheat sheets and video scripts. Each prompt page says where it comes from.</li>
+        <li>Facts in the lessons are checked against the sources listed at the end of each episode.</li>
+        <li>Example outputs are only shown when they are real. Nothing here is an invented test result.</li>
+        <li>The videos use an AI voice-over and are labelled as AI content on Instagram and YouTube.</li>
+      </ul>
+      <h2>Independent</h2>
+      <p>
+        Jajati AI is not affiliated with OpenAI, Google, Anthropic or any other AI company. Product names are used only
+        to say which tool a prompt is meant for.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import CirclePlay from '@lucide/astro/icons/circle-play';
+import Camera from '@lucide/astro/icons/camera';
+
+interface Props {
+  youtube?: string;
+  instagram?: string;
+  /** Analytics params, e.g. episode_id and episode_title. */
+  track?: Record<string, string>;
+  location?: string;
+}
+const { youtube, instagram, track = {}, location = 'video_links' } = Astro.props;
+---
+
+{
+  (youtube || instagram) && (
+    <div class="flex flex-wrap gap-2" data-section={location}>
+      {youtube && (
+        <a
+          href={youtube}
+          rel="noopener"
+          class="btn btn-secondary btn-small"
+          data-track="youtube_click"
+          data-track-params={JSON.stringify({ ...track, link_location: location })}
+        >
+          <CirclePlay size={18} aria-hidden="true" />
+          Watch on YouTube
+        </a>
+      )}
+      {instagram && (
+        <a
+          href={instagram}
+          rel="noopener"
+          class="btn btn-secondary btn-small"
+          data-track="instagram_click"
+          data-track-params={JSON.stringify({ ...track, link_location: location })}
+        >
+          <Camera size={18} aria-hidden="true" />
+          Watch on Instagram
+        </a>
+      )}
+    </div>
+  )
+}

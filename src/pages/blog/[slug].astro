@@ -1,0 +1,101 @@
+---
+/**
+ * Blog post template. A post is one Markdown file in src/content/blog/ with status: published.
+ * See docs/templates/blog-post.md for a starter file.
+ */
+import { getEntries, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PromptCard from '../../components/PromptCard.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import { LEARN_CATEGORIES } from '../../data/taxonomy';
+import { formatDate, getBlogPosts, readingTime, type BlogPost } from '../../utils/content';
+import { absolute, paths } from '../../utils/urls';
+
+export async function getStaticPaths() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: BlogPost;
+}
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+const prompts = await getEntries(d.relatedPrompts);
+const episodes = (await getEntries(d.relatedEpisodes)).filter((e) => e.data.status === 'published');
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: d.title,
+    description: d.description,
+    url: absolute(paths.blog(post.id), Astro.site),
+    datePublished: d.published.toISOString(),
+    ...(d.updated ? { dateModified: d.updated.toISOString() } : {}),
+    author: { '@type': 'Organization', name: 'Jajati AI' },
+    publisher: { '@type': 'Organization', name: 'Jajati AI' },
+  },
+];
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  ogType="article"
+  breadcrumbs={[{ label: 'Blog', href: '/blog/' }, { label: d.title }]}
+  jsonLd={jsonLd}
+  pageType="blog_article"
+  pageEvent="blog_article_view"
+  pageParams={{ category: d.category }}
+  published={d.published}
+  modified={d.updated}
+>
+  <article class="container-ja max-w-3xl pt-6 md:pt-10">
+    <header>
+      <p class="text-sm text-muted">
+        {LEARN_CATEGORIES[d.category]} · {formatDate(d.published)} · {readingTime(post.body)} min read
+      </p>
+      <h1 class="mt-2 text-3xl font-extrabold md:text-4xl">{d.title}</h1>
+      <p class="mt-3 text-lg text-muted">{d.description}</p>
+    </header>
+    <div class="prose-ja mt-8">
+      <Content />
+    </div>
+    {
+      prompts.length > 0 && (
+        <section class="mt-12" aria-labelledby="p-title">
+          <h2 id="p-title" class="text-2xl font-bold">
+            Related prompts
+          </h2>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+            {prompts.map((p) => (
+              <li class="contents">
+                <PromptCard prompt={p} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+    {
+      episodes.length > 0 && (
+        <section class="mt-12" aria-labelledby="e-title">
+          <h2 id="e-title" class="text-2xl font-bold">
+            Related episodes
+          </h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            {episodes.map((e) => (
+              <EpisodeCard episode={e} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+    <div class="mt-10">
+      <ShareButtons title={d.title} />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+/**
+ * A prompt with a Copy button. The copied text is exactly `text`; [brackets] are only highlighted.
+ */
+import Copy from '@lucide/astro/icons/copy';
+
+interface Props {
+  /** Unique on the page; used for the element id. */
+  id: string;
+  text: string;
+  lang?: string;
+  label?: string;
+  /** Analytics params for prompt_copy. */
+  track?: Record<string, string>;
+  class?: string;
+}
+
+const { id, text, lang = 'hi-Latn', label = 'Prompt', track = {}, class: className } = Astro.props;
+const elId = `prompt-text-${id}`;
+const parts = text.split(/(\[[^\]]+\])/g).filter((p) => p.length > 0);
+---
+
+<div class:list={['card p-4 md:p-5', className]}>
+  <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+    <span class="eyebrow">{label}</span>
+    <button
+      type="button"
+      class="btn btn-primary btn-small"
+      data-copy={`#${elId}`}
+      data-track-params={JSON.stringify(track)}
+    >
+      <Copy size={18} aria-hidden="true" />
+      <span data-label>Copy prompt</span>
+    </button>
+  </div>
+  <pre id={elId} class="prompt-text" lang={lang}>{
+    parts.map((p) =>
+      p.startsWith('[') ? <mark class="rounded bg-cyan/15 px-0.5 text-cyan-soft">{p}</mark> : p,
+    )
+  }</pre>
+</div>

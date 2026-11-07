@@ -1,0 +1,46 @@
+---
+import { Picture } from 'astro:assets';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import type { Resource } from '../utils/content';
+import { paths } from '../utils/urls';
+
+interface Props {
+  resource: Resource;
+  level?: 'h2' | 'h3';
+  /** Load the preview eagerly (use for the first card above the fold). */
+  eager?: boolean;
+}
+const { resource, level = 'h3', eager = false } = Astro.props;
+const d = resource.data;
+const Heading = level;
+const formats = [...new Set(d.files.map((f) => f.format))].join(' + ');
+const preview = d.previews[0]!;
+---
+
+<article class="card card-link flex h-full flex-col overflow-hidden">
+  <a href={paths.resource(resource.id)} class="block bg-raised" tabindex="-1" aria-hidden="true">
+    <Picture
+      src={preview.src}
+      alt=""
+      widths={[360, 540, 720]}
+      sizes="(min-width: 1024px) 360px, (min-width: 768px) 45vw, 92vw"
+      formats={['avif']}
+      fallbackFormat="webp"
+      loading={eager ? 'eager' : 'lazy'}
+      class="aspect-[4/3] w-full object-cover object-top"
+    />
+  </a>
+  <div class="flex flex-1 flex-col gap-3 p-4 md:p-5">
+    <p class="flex flex-wrap gap-1.5">
+      <span class="pill pill-accent">Keyword: {d.keyword}</span>
+      <span class="pill">{formats}</span>
+    </p>
+    <Heading class="text-lg font-bold leading-snug">
+      <a href={paths.resource(resource.id)} class="text-text no-underline hover:text-cyan-soft">{d.title}</a>
+    </Heading>
+    <p class="text-[0.95rem] text-muted">{d.description}</p>
+    <a href={paths.resource(resource.id)} class="btn btn-secondary btn-small mt-auto self-start">
+      Get the free sheet <ArrowRight size={18} aria-hidden="true" />
+    </a>
+  </div>
+</article>

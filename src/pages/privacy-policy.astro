@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT, SOCIAL } from '../data/site';
+
+const ga4On = /^G-[A-Z0-9]{4,}$/i.test(String(import.meta.env.PUBLIC_GA4_ID ?? '').trim());
+const updated = '7 November 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="What this site stores and measures: no accounts, no forms, favourites in your own browser, and privacy-friendly analytics."
+  breadcrumbs={[{ label: 'Privacy policy' }]}
+  pageType="policy"
+>
+  <article class="container-ja max-w-3xl pt-6 md:pt-10">
+    <h1 class="text-3xl font-extrabold md:text-5xl">Privacy policy</h1>
+    <p class="mt-2 text-sm text-muted">Last updated: {updated}</p>
+    <div class="prose-ja mt-6">
+      <h2>The short version</h2>
+      <ul>
+        <li>There are no accounts, no sign-up forms and no email collection on this site.</li>
+        <li>Downloads are free and do not ask for any details.</li>
+        <li>Favourites and episode progress are stored only in your own browser.</li>
+        <li>Visits are measured in aggregate to see which resources help. No personal details are sent.</li>
+      </ul>
+
+      <h2>Stored in your browser</h2>
+      <p>
+        If you save a prompt or mark an episode as completed, the site keeps a small list of ids in your browser's
+        local storage. It never leaves your device, is not synced between devices, and is cleared when you clear your
+        browser data. If you open a link with campaign tags (for example <code>utm_source=instagram</code>), the tags are
+        kept in session storage for that tab so later clicks can be counted against the same campaign.
+      </p>
+
+      <h2>Analytics</h2>
+      <p>
+        The site may use <strong>Cloudflare Web Analytics</strong>, which counts page views without cookies and does
+        not record query strings. It may also use <strong>Google Analytics 4</strong> to count actions such as "prompt
+        copied" or "sheet downloaded". Google Analytics sets first-party cookies to tell visits apart. Google signals
+        and ad personalisation are switched off on this site. Events contain only content ids and titles (which prompt,
+        which sheet), never your name, email, username or anything you type.
+      </p>
+      <p>Google Analytics is currently {ga4On ? 'switched on' : 'switched off'} on this site.</p>
+
+      <h2>Links to other sites</h2>
+      <p>
+        Links to Instagram, YouTube, WhatsApp, NotebookLM and source articles take you to those services, which have
+        their own privacy policies.
+      </p>
+
+      <h2>Hosting</h2>
+      <p>
+        The site is static and hosted on Cloudflare Pages. Like any web host, Cloudflare processes technical request
+        data (such as IP addresses) to deliver pages and protect the service.
+      </p>
+
+      <h2>Questions</h2>
+      <p>
+        Reach out on <a href={SOCIAL.instagram.url} rel="noopener">Instagram</a>{
+          CONTACT.email && (
+            <>
+              {' '}
+              or by email at <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            </>
+          )
+        }.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

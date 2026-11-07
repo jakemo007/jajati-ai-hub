@@ -1,0 +1,19 @@
+---
+import type { PromptCategoryId, ToolId } from '../data/taxonomy';
+import { categoryLabel, toolLabel } from '../utils/content';
+
+interface Props {
+  category?: PromptCategoryId;
+  tools?: ToolId[];
+  difficulty?: string;
+  extra?: string[];
+}
+const { category, tools = [], difficulty, extra = [] } = Astro.props;
+---
+
+<ul class="flex flex-wrap gap-1.5" aria-label="Tags">
+  {category && <li class="pill pill-accent">{categoryLabel(category)}</li>}
+  {tools.map((t) => <li class="pill">{toolLabel(t)}</li>)}
+  {difficulty && <li class="pill">{difficulty}</li>}
+  {extra.map((x) => <li class="pill">{x}</li>)}
+</ul>

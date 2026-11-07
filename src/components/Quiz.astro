@@ -1,0 +1,91 @@
+---
+/** A short self-check quiz. Answers are checked in the browser; only the score goes to analytics. */
+interface Props {
+  id: string;
+  title: string;
+  questions: { q: string; options: string[]; answer: number; explain: string }[];
+}
+const { id, title, questions } = Astro.props;
+---
+
+{
+  questions.length > 0 && (
+    <section class="card p-4 md:p-6" aria-labelledby={`quiz-${id}-title`} data-quiz={id} data-quiz-title={title}>
+      <h2 id={`quiz-${id}-title`} class="text-xl font-bold">
+        Quick check: {questions.length} questions
+      </h2>
+      <p class="mt-1 text-sm text-muted">Samjha ya sirf padha? Answers sirf tumhe dikhte hain.</p>
+      <form class="mt-4 grid gap-5" novalidate>
+        {questions.map((qq, qi) => (
+          <fieldset class="grid gap-2" data-answer={qq.answer}>
+            <legend class="mb-1 font-semibold" lang="hi-Latn">
+              {qi + 1}. {qq.q}
+            </legend>
+            {qq.options.map((opt, oi) => (
+              <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border border-line px-3 py-2.5 hover:border-line-strong has-[:checked]:border-cyan">
+                <input type="radio" name={`${id}-q${qi}`} value={oi} class="mt-1 size-4 accent-cyan" />
+                <span lang="hi-Latn">{opt}</span>
+              </label>
+            ))}
+            <p class="text-sm" data-feedback hidden lang="hi-Latn" />
+            <p class="text-sm text-muted" data-explain hidden lang="hi-Latn">
+              {qq.explain}
+            </p>
+          </fieldset>
+        ))}
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="submit" class="btn btn-primary btn-small">
+            Check answers
+          </button>
+          <p class="font-semibold" data-score aria-live="polite" />
+        </div>
+      </form>
+    </section>
+  )
+}
+
+<script>
+  import { track } from '../utils/analytics';
+
+  document.querySelectorAll<HTMLElement>('[data-quiz]').forEach((quiz) => {
+    const form = quiz.querySelector('form');
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const sets = [...form.querySelectorAll<HTMLFieldSetElement>('fieldset[data-answer]')];
+      let right = 0;
+      let answered = 0;
+      for (const set of sets) {
+        const picked = set.querySelector<HTMLInputElement>('input:checked');
+        const feedback = set.querySelector<HTMLElement>('[data-feedback]')!;
+        const explain = set.querySelector<HTMLElement>('[data-explain]')!;
+        if (!picked) {
+          feedback.hidden = false;
+          feedback.textContent = 'Ek option chuno.';
+          feedback.className = 'text-sm text-warn';
+          explain.hidden = true;
+          continue;
+        }
+        answered += 1;
+        const ok = picked.value === set.dataset.answer;
+        if (ok) right += 1;
+        feedback.hidden = false;
+        feedback.textContent = ok ? 'Sahi! ✓' : 'Galat. Sahi jawab niche padho.';
+        feedback.className = ok ? 'text-sm font-semibold text-ok' : 'text-sm font-semibold text-warn';
+        explain.hidden = false;
+      }
+      const score = quiz.querySelector<HTMLElement>('[data-score]')!;
+      if (answered < sets.length) {
+        score.textContent = `${sets.length - answered} sawal baaki hain.`;
+        return;
+      }
+      score.textContent = `Score: ${right} / ${sets.length}`;
+      track('quiz_complete', {
+        episode_id: quiz.dataset.quiz,
+        episode_title: quiz.dataset.quizTitle,
+        quiz_score: right,
+        quiz_total: sets.length,
+      });
+    });
+  });
+</script>

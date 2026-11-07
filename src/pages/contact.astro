@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT, SOCIAL } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact"
+  description="How to reach Jajati AI: Instagram and YouTube."
+  breadcrumbs={[{ label: 'Contact' }]}
+  pageType="contact"
+>
+  <article class="container-ja max-w-3xl pt-6 md:pt-10">
+    <h1 class="text-3xl font-extrabold md:text-5xl">Contact</h1>
+    <div class="prose-ja mt-6">
+      <p>The quickest way to reach Jajati AI is on Instagram or YouTube.</p>
+      <ul>
+        <li>
+          Instagram: <a href={SOCIAL.instagram.url} rel="noopener">{SOCIAL.instagram.handle}</a> (comments and messages)
+        </li>
+        <li>YouTube: <a href={SOCIAL.youtube.url} rel="noopener">{SOCIAL.youtube.handle}</a> (comments)</li>
+        {
+          CONTACT.email && (
+            <li>
+              Email: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            </li>
+          )
+        }
+      </ul>
+      <p>
+        Looking for a cheat sheet? You do not need to message anyone. Every sheet is on the
+        <a href="/free-resources/">free resources page</a>.
+      </p>
+      <p class="text-sm text-muted">
+        Please do not send passwords, ID numbers or other private details in comments or messages.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getResources } from '../utils/content';
+import { paths } from '../utils/urls';
+
+const resources = await getResources();
+---
+
+<BaseLayout
+  title="Page not found"
+  description="This page does not exist. Find the free cheat sheets and prompts here."
+  noindex
+  pageType="not_found"
+>
+  <section class="container-ja max-w-2xl pt-10 md:pt-16">
+    <p class="eyebrow">404</p>
+    <h1 class="mt-2 text-3xl font-extrabold md:text-5xl">This page does not exist</h1>
+    <p class="mt-3 text-lg text-muted">Came from a reel? Your sheet is probably one of these:</p>
+    <ul class="mt-6 grid gap-2">
+      {
+        resources.map((r) => (
+          <li>
+            <a href={paths.resource(r.id)} class="btn btn-secondary w-full justify-start">
+              <span class="font-extrabold text-cyan-soft">{r.data.keyword}</span> {r.data.shortTitle}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <a href="/" class="btn btn-primary">Go to the homepage</a>
+      <a href="/prompts/" class="btn btn-secondary">Browse prompts</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,154 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs, { type Crumb } from '../components/Breadcrumbs.astro';
+import { SITE } from '../data/site';
+import { absolute, withSlash } from '../utils/urls';
+
+interface Props {
+  /** Page title without the brand; the brand is appended. */
+  title: string;
+  description: string;
+  /** Use the title as given, without " | Jajati AI". */
+  rawTitle?: boolean;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  breadcrumbs?: Crumb[];
+  /** Structured data objects (schema.org). */
+  jsonLd?: Record<string, unknown>[];
+  /** Analytics: page type and an optional page-level event with its params. */
+  pageType?: string;
+  pageEvent?: string;
+  pageParams?: Record<string, string | number>;
+  published?: Date;
+  modified?: Date;
+}
+
+const {
+  title,
+  description,
+  rawTitle = false,
+  ogImage = SITE.ogImage,
+  ogType = 'website',
+  noindex = false,
+  breadcrumbs,
+  jsonLd = [],
+  pageType = 'page',
+  pageEvent,
+  pageParams,
+  published,
+  modified,
+} = Astro.props;
+
+const fullTitle = rawTitle ? title : `${title} | ${SITE.name}`;
+const canonical = absolute(withSlash(Astro.url.pathname), Astro.site);
+const ogImageUrl = absolute(ogImage, Astro.site);
+
+const ga4Id = String(import.meta.env.PUBLIC_GA4_ID ?? '').trim();
+const ga4 = /^G-[A-Z0-9]{4,}$/i.test(ga4Id) ? ga4Id : '';
+const cfToken = String(import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN ?? '').trim();
+const cfBeacon = /^[a-f0-9]{16,64}$/i.test(cfToken) ? JSON.stringify({ token: cfToken }) : '';
+
+const crumbLd =
+  breadcrumbs && breadcrumbs.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ label: 'Home', href: '/' }, ...breadcrumbs].map((c, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: c.label,
+          ...(c.href ? { item: absolute(c.href, Astro.site) } : { item: canonical }),
+        })),
+      }
+    : null;
+const allLd = crumbLd ? [...jsonLd, crumbLd] : jsonLd;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#0a0f1f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:site_name" content={SITE.fullName} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    {modified && <meta property="article:modified_time" content={modified.toISOString()} />}
+    <meta name="generator" content={Astro.generator} />
+
+    {
+      allLd.map((ld) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(ld).replace(/</g, '\\u003c')} />
+      ))
+    }
+
+    {
+      ga4 && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4}`} />
+          <script is:inline define:vars={{ ga4 }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              window.dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', ga4, { allow_google_signals: false, allow_ad_personalization_signals: false });
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body
+    class="min-h-dvh flex flex-col"
+    data-page-type={pageType}
+    data-page-event={pageEvent}
+    data-track-params={pageParams ? JSON.stringify(pageParams) : undefined}
+  >
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" class="flex-1" tabindex="-1">
+      {
+        breadcrumbs && breadcrumbs.length > 0 && (
+          <div class="container-ja pt-4">
+            <Breadcrumbs items={breadcrumbs} />
+          </div>
+        )
+      }
+      <slot />
+    </main>
+    <Footer />
+    <div id="ja-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <script>
+      import '../scripts/ui.ts';
+    </script>
+    {
+      cfBeacon && (
+        <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={cfBeacon} />
+      )
+    }
+  </body>
+</html>

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Disclaimer"
+  description="AI answers can be wrong. How to use the prompts and lessons on Jajati AI responsibly."
+  breadcrumbs={[{ label: 'Disclaimer' }]}
+  pageType="policy"
+>
+  <article class="container-ja max-w-3xl pt-6 md:pt-10">
+    <h1 class="text-3xl font-extrabold md:text-5xl">Disclaimer</h1>
+    <div class="prose-ja mt-6">
+      <ul>
+        <li>
+          <strong>AI can be wrong.</strong> Prompts help you get better answers, but AI tools still make mistakes and
+          sometimes invent facts, links or sources. Check anything important yourself.
+        </li>
+        <li>
+          <strong>Educational content.</strong> The lessons and prompts are for learning. They are not legal, medical,
+          financial or career advice.
+        </li>
+        <li>
+          <strong>Your data.</strong> Think before pasting personal, client or office information into any AI tool, and
+          follow your school's or company's rules.
+        </li>
+        <li>
+          <strong>Results vary.</strong> The same prompt can give different answers on different tools, models or days.
+          No result is guaranteed.
+        </li>
+        <li>
+          <strong>Independent.</strong> Jajati AI is not affiliated with or endorsed by OpenAI, Google, Anthropic or
+          any other company named on the site. Names like ChatGPT, Gemini, Claude and NotebookLM belong to their owners.
+        </li>
+        <li>
+          <strong>Facts change.</strong> AI products change quickly. Facts are checked against the listed sources on
+          the date of each episode.
+        </li>
+      </ul>
+    </div>
+  </article>
+</BaseLayout>

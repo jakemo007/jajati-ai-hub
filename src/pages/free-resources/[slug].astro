@@ -1,0 +1,289 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { Picture } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import Download from '@lucide/astro/icons/download';
+import FileText from '@lucide/astro/icons/file-text';
+import ImageIcon from '@lucide/astro/icons/image';
+import ArrowDown from '@lucide/astro/icons/arrow-down';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PromptBlock from '../../components/PromptBlock.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import VideoLinks from '../../components/VideoLinks.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import { categoryLabel, getPrompts, getResources, type Resource } from '../../utils/content';
+import { absolute, paths } from '../../utils/urls';
+
+export async function getStaticPaths() {
+  const resources = await getResources();
+  return resources.map((resource) => ({ params: { slug: resource.id }, props: { resource } }));
+}
+
+interface Props {
+  resource: Resource;
+}
+const { resource } = Astro.props;
+const d = resource.data;
+const { Content } = await render(resource);
+
+const allPrompts = await getPrompts();
+const prompts = d.relatedPrompts
+  .map((ref) => allPrompts.find((p) => p.id === ref.id))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+const episode = d.episode ? await getEntry(d.episode) : undefined;
+const others = (await getResources()).filter((r) => r.id !== resource.id);
+
+function fileSize(name: string): string {
+  const bytes = fs.statSync(path.join(process.cwd(), 'public', 'resources', name)).size;
+  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
+}
+const files = d.files.map((f) => ({ ...f, size: fileSize(f.file) }));
+const [primary, ...secondary] = files;
+const base = { resource_id: resource.id, resource_title: d.shortTitle };
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'LearningResource',
+    name: d.title,
+    description: d.description,
+    url: absolute(paths.resource(resource.id), Astro.site),
+    inLanguage: ['hi-Latn', 'en'],
+    isAccessibleForFree: true,
+    learningResourceType: 'Cheat sheet',
+    educationalLevel: 'Beginner',
+    teaches: d.learn,
+    publisher: { '@type': 'Organization', name: 'Jajati AI' },
+    encoding: files.map((f) => ({
+      '@type': 'MediaObject',
+      contentUrl: absolute(paths.file(f.file), Astro.site),
+      encodingFormat: f.format === 'PDF' ? 'application/pdf' : 'image/png',
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  ogImage={d.ogImage}
+  breadcrumbs={[{ label: 'Free cheat sheets', href: '/free-resources/' }, { label: d.shortTitle }]}
+  jsonLd={jsonLd}
+  pageType="resource"
+  pageEvent="resource_view"
+  pageParams={base}
+>
+  <article class="container-ja">
+    <header class="pt-6 md:pt-10">
+      <p class="flex flex-wrap gap-1.5">
+        <span class="pill pill-accent">Free cheat sheet</span>
+        {episode?.data.number && <span class="pill">AI Explained · Episode {episode.data.number}</span>}
+        <span class="pill">Instagram keyword: {d.keyword}</span>
+      </p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-extrabold md:text-5xl">{d.title}</h1>
+      <p class="mt-3 max-w-2xl text-lg text-muted">{d.description}</p>
+      <p class="mt-2 text-sm font-semibold text-ok">Free. No sign-up, no follow needed, no DM needed.</p>
+
+      <div class="mt-6 flex flex-wrap gap-2" data-section="downloads">
+        {
+          primary && (
+            <a
+              href={paths.file(primary.file)}
+              download
+              class="btn btn-primary"
+              data-track="resource_download"
+              data-track-params={JSON.stringify({ ...base, file_format: primary.format, file_name: primary.file })}
+            >
+              <Download size={20} aria-hidden="true" />
+              Download {primary.format} ({primary.pages ? `${primary.pages} ${primary.pages > 1 ? 'pages' : 'page'}, ` : ''}
+              {primary.size})
+            </a>
+          )
+        }
+        {
+          prompts.length > 0 && (
+            <a href="#prompts" class="btn btn-secondary">
+              <ArrowDown size={20} aria-hidden="true" />
+              {resource.id === 'chatgpt-prompt-cheatsheet' ? 'Copy the 5 prompts here' : 'Copy the lines here'}
+            </a>
+          )
+        }
+      </div>
+      {
+        secondary.length > 0 && (
+          <ul class="mt-3 flex flex-wrap gap-2" aria-label="Other formats">
+            {secondary.map((f) => (
+              <li>
+                <a
+                  href={paths.file(f.file)}
+                  download
+                  class="btn btn-secondary btn-small"
+                  data-track="resource_download"
+                  data-track-params={JSON.stringify({ ...base, file_format: f.format, file_name: f.file })}
+                >
+                  <ImageIcon size={18} aria-hidden="true" />
+                  {f.label} ({f.format}, {f.size})
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      <p class="mt-3 max-w-2xl text-sm text-muted">
+        Download not starting inside the Instagram app? Tap the ⋯ menu and open this page in Chrome or Safari. Or
+        long-press a preview below and save the image.
+      </p>
+    </header>
+
+    <section class="mt-10 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start" aria-labelledby="inside">
+      <div>
+        <h2 id="inside" class="text-2xl font-bold">What you will learn</h2>
+        <ul class="mt-4 grid gap-2.5">
+          {
+            d.learn.map((item) => (
+              <li class="flex gap-3">
+                <FileText size={20} class="mt-1 shrink-0 text-cyan" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="prose-ja mt-8">
+          <Content />
+        </div>
+      </div>
+      <div>
+        <h2 class="sr-only">Preview</h2>
+        <ul class:list={['grid gap-3', d.previews.length > 1 ? 'grid-cols-2' : 'max-w-[15rem] grid-cols-1']}>
+          {
+            d.previews.map((p, i) => (
+              <li>
+                <a
+                  href={paths.file(p.file)}
+                  class="block overflow-hidden rounded-xl border border-line bg-raised"
+                  data-track="resource_download"
+                  data-track-params={JSON.stringify({ ...base, file_format: 'PNG', file_name: p.file, method: 'preview' })}
+                >
+                  <Picture
+                    src={p.src}
+                    alt={p.alt}
+                    widths={[240, 360, 540, 720]}
+                    sizes="(min-width: 1024px) 260px, (min-width: 768px) 22vw, 45vw"
+                    formats={['avif']}
+                    fallbackFormat="webp"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    class="h-auto w-full"
+                  />
+                </a>
+                <p class="mt-1.5 text-center text-xs text-muted">Page {i + 1}: tap to open full size</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    {
+      prompts.length > 0 && (
+        <section id="prompts" class="mt-14 scroll-mt-20" aria-labelledby="prompts-title">
+          <h2 id="prompts-title" class="text-2xl font-bold md:text-3xl">
+            {d.promptsHeading}
+          </h2>
+          <p class="mt-2 max-w-2xl text-muted">
+            Tap <strong class="text-text">Copy prompt</strong>, paste it into ChatGPT, then replace the{' '}
+            <mark class="rounded bg-cyan/15 px-1 text-cyan-soft">[brackets]</mark> with your own details.
+          </p>
+          <ol class="mt-6 grid gap-5">
+            {prompts.map((p) => (
+              <li>
+                <h3 class="mb-2 text-lg font-bold">
+                  <a href={paths.prompt(p.id)} class="text-text no-underline hover:text-cyan-soft">
+                    {p.data.title}
+                  </a>
+                </h3>
+                <PromptBlock
+                  id={p.id}
+                  text={p.data.prompt}
+                  lang={p.data.promptLang}
+                  label={categoryLabel(p.data.category)}
+                  track={{
+                    prompt_id: p.id,
+                    prompt_title: p.data.title,
+                    category: p.data.category,
+                    tool: p.data.tools.join(','),
+                    resource_id: resource.id,
+                    link_location: 'resource_page',
+                  }}
+                />
+                <p class="mt-2 text-sm">
+                  <a href={paths.prompt(p.id)}>How to use this prompt</a>
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    {
+      d.takeaway && (
+        <p class="mx-auto mt-12 max-w-2xl rounded-2xl border border-cyan/30 bg-cyan/5 px-5 py-6 text-center text-xl font-bold md:text-2xl">
+          <span lang="hi-Latn">“{d.takeaway}”</span>
+        </p>
+      )
+    }
+
+    {
+      episode && (
+        <section class="mt-14" aria-labelledby="episode-title">
+          <h2 id="episode-title" class="text-2xl font-bold">
+            Learn the idea behind this sheet
+          </h2>
+          <div class="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start">
+            <EpisodeCard episode={episode} />
+            <div class="card p-4 md:p-5">
+              <p class="font-semibold">Watch the video</p>
+              <div class="mt-3">
+                <VideoLinks
+                  youtube={episode.data.videos.youtube}
+                  instagram={episode.data.videos.instagram}
+                  track={{ episode_id: episode.id, episode_title: episode.data.title, resource_id: resource.id }}
+                  location="resource_page"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="mt-14" aria-labelledby="share-title">
+      <h2 id="share-title" class="text-xl font-bold">Share this sheet with a friend</h2>
+      <p class="mt-1 text-muted">Free for everyone. Anyone with the link can open and download it.</p>
+      <div class="mt-4">
+        <ShareButtons
+          title={d.title}
+          text={`Free cheat sheet: ${d.shortTitle}`}
+          track={{ resource_id: resource.id, resource_title: d.shortTitle }}
+        />
+      </div>
+    </section>
+
+    {
+      others.length > 0 && (
+        <section class="mt-14" aria-labelledby="more-title">
+          <h2 id="more-title" class="text-2xl font-bold">
+            More free cheat sheets
+          </h2>
+          <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((r) => (
+              <ResourceCard resource={r} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>

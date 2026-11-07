@@ -1,0 +1,260 @@
+---
+import { Picture } from 'astro:assets';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import Download from '@lucide/astro/icons/download';
+import CirclePlay from '@lucide/astro/icons/circle-play';
+import Camera from '@lucide/astro/icons/camera';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PromptCard from '../components/PromptCard.astro';
+import ResourceCard from '../components/ResourceCard.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import FormulaStrip from '../components/FormulaStrip.astro';
+import { SITE, SOCIAL } from '../data/site';
+import { PROMPT_CATEGORIES, type PromptCategoryId } from '../data/taxonomy';
+import { getBlogPosts, getEpisodes, getPrompts, getResources, formatDate } from '../utils/content';
+import { absolute, paths } from '../utils/urls';
+
+const resources = await getResources();
+const featured = resources[0]!;
+const prompts = await getPrompts();
+const popular = prompts.filter((p) => p.data.featured).slice(0, 6);
+const episodes = await getEpisodes();
+const published = episodes.filter((e) => e.data.status === 'published');
+const latestEpisodes = [...published].reverse().slice(0, 3);
+const nextUp = episodes.find((e) => e.id === 'ai-agents');
+const posts = (await getBlogPosts()).slice(0, 3);
+
+const categories = (Object.keys(PROMPT_CATEGORIES) as PromptCategoryId[])
+  .map((id) => ({ id, ...PROMPT_CATEGORIES[id], count: prompts.filter((p) => p.data.category === id).length }))
+  .filter((c) => c.count > 0);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.fullName,
+    alternateName: SITE.name,
+    url: absolute('/', Astro.site),
+    description: SITE.description,
+    inLanguage: ['en-IN', 'hi-Latn'],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE.name,
+    url: absolute('/', Astro.site),
+    logo: absolute('/apple-touch-icon.png', Astro.site),
+    sameAs: [SOCIAL.instagram.url, SOCIAL.youtube.url],
+  },
+];
+---
+
+<BaseLayout
+  title={`${SITE.fullName}: Free AI Prompts and Cheat Sheets`}
+  rawTitle
+  description="Free copy-paste AI prompts, cheat sheets and simple Hindi lessons to get better results from ChatGPT, Gemini and other AI tools. No sign-up, no DM needed."
+  jsonLd={jsonLd}
+  pageType="home"
+>
+  <!-- 1. Hero + featured sheet (above the fold) -->
+  <section class="relative overflow-hidden border-b border-line">
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_30rem_at_80%_-10%,rgb(59_130_246/0.18),transparent),radial-gradient(40rem_24rem_at_0%_0%,rgb(34_211_238/0.10),transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="container-ja relative grid gap-8 py-8 md:py-16 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center">
+      <div>
+        <p class="eyebrow">{SITE.tagline}</p>
+        <h1 class="mt-3 text-4xl font-extrabold md:text-6xl">
+          Stop Guessing.<br /><span class="text-cyan">Start Prompting Better.</span>
+        </h1>
+        <p class="mt-4 max-w-xl text-lg text-muted">
+          Free copy-paste AI prompts, practical examples, and simple Hindi lessons to help you get better results from
+          ChatGPT, Gemini, and other AI tools.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/prompts/" class="btn btn-primary">Explore Free Prompts <ArrowRight size={18} aria-hidden="true" /></a>
+          <a href="/episodes/" class="btn btn-secondary">Start Learning AI</a>
+        </div>
+      </div>
+
+      <aside class="card overflow-hidden" aria-labelledby="featured-title" data-section="home_featured">
+        <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 p-4 sm:grid-cols-[8rem_minmax(0,1fr)] md:p-5">
+          <a href={paths.resource(featured.id)} tabindex="-1" aria-hidden="true" class="block overflow-hidden rounded-lg border border-line">
+            <Picture
+              src={featured.data.previews[0]!.src}
+              alt=""
+              widths={[160, 260, 320]}
+              sizes="8rem"
+              formats={['avif']}
+              fallbackFormat="webp"
+              loading="eager"
+              class="h-auto w-full"
+            />
+          </a>
+          <div class="min-w-0">
+            <p class="eyebrow">Free cheat sheet</p>
+            <h2 id="featured-title" class="mt-1 text-lg font-bold leading-snug md:text-xl">
+              <a href={paths.resource(featured.id)} class="text-text no-underline hover:text-cyan-soft">
+                {featured.data.title}
+              </a>
+            </h2>
+            <p class="mt-1 text-sm text-muted">
+              Commented <strong class="text-text">{featured.data.keyword}</strong>? It is here. No DM needed.
+            </p>
+            <a href={paths.resource(featured.id)} class="btn btn-primary btn-small mt-3">
+              <Download size={18} aria-hidden="true" /> Get the sheet
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2. Popular prompts -->
+  <section class="container-ja mt-14" aria-labelledby="popular-title">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="eyebrow">Copy in one tap</p>
+        <h2 id="popular-title" class="mt-1 text-2xl font-bold md:text-3xl">Popular prompts</h2>
+        <p class="mt-1 text-muted">The 5 prompts from the Episode 5 PROMPT sheet, and the template behind them.</p>
+      </div>
+      <a href="/prompts/" class="btn btn-secondary btn-small">All prompts <ArrowRight size={18} aria-hidden="true" /></a>
+    </div>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        popular.map((p) => (
+          <li class="contents">
+            <PromptCard prompt={p} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 3. The 4-part formula -->
+  <section class="container-ja mt-16" aria-labelledby="formula-title">
+    <p class="eyebrow">The one formula to remember</p>
+    <h2 id="formula-title" class="mt-1 text-2xl font-bold md:text-3xl">Role, Context, Task, Format</h2>
+    <p class="mt-2 max-w-2xl text-muted">
+      "Resume bana do" gets a generic answer. Add these 4 parts and the same AI writes for <em>you</em>. Example: the
+      resume prompt from Episode 5.
+    </p>
+    <div class="mt-6">
+      <FormulaStrip />
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <a href={paths.prompt('role-context-task-format')} class="btn btn-secondary btn-small">Copy the template</a>
+      <a href={paths.episode('prompt-engineering')} class="btn btn-secondary btn-small">Read Episode 5</a>
+    </div>
+  </section>
+
+  <!-- 4. Categories -->
+  <section class="container-ja mt-16" aria-labelledby="categories-title">
+    <h2 id="categories-title" class="text-2xl font-bold md:text-3xl">Browse prompts by category</h2>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        categories.map((c) => (
+          <li>
+            <a
+              href={`/prompts/?category=${c.id}`}
+              class="card card-link flex h-full flex-col gap-1 p-4 text-text no-underline"
+            >
+              <span class="font-bold">{c.label}</span>
+              <span class="text-sm text-muted">{c.blurb}</span>
+              <span class="mt-auto pt-2 text-sm text-cyan-soft">
+                {c.count} {c.count === 1 ? 'prompt' : 'prompts'}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 5. All free sheets -->
+  <section class="container-ja mt-16" aria-labelledby="sheets-title">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <h2 id="sheets-title" class="text-2xl font-bold md:text-3xl">Free cheat sheets</h2>
+      <a href="/free-resources/" class="btn btn-secondary btn-small">All sheets <ArrowRight size={18} aria-hidden="true" /></a>
+    </div>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {resources.map((r) => <ResourceCard resource={r} />)}
+    </div>
+  </section>
+
+  <!-- 6. Latest episodes -->
+  <section class="container-ja mt-16" aria-labelledby="episodes-title">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="eyebrow">AI Explained series</p>
+        <h2 id="episodes-title" class="mt-1 text-2xl font-bold md:text-3xl">Latest episodes</h2>
+        <p class="mt-1 text-muted">One AI concept per episode, in simple Hindi, with something you can try today.</p>
+      </div>
+      <a href="/episodes/" class="btn btn-secondary btn-small">All episodes <ArrowRight size={18} aria-hidden="true" /></a>
+    </div>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {latestEpisodes.map((e) => <EpisodeCard episode={e} />)}
+    </div>
+    {
+      nextUp && (
+        <p class="mt-4 text-muted">
+          Next up: <strong class="text-text">{nextUp.data.title}</strong>. {nextUp.data.description}
+        </p>
+      )
+    }
+  </section>
+
+  <!-- 7. Blog (only when posts exist) -->
+  {
+    posts.length > 0 && (
+      <section class="container-ja mt-16" aria-labelledby="blog-title">
+        <h2 id="blog-title" class="text-2xl font-bold md:text-3xl">
+          Latest from the blog
+        </h2>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((p) => (
+            <li class="card p-4">
+              <a href={paths.blog(p.id)} class="font-bold">
+                {p.data.title}
+              </a>
+              <p class="mt-1 text-sm text-muted">{formatDate(p.data.published)}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <!-- 8 + 9. Instagram and YouTube -->
+  <section class="container-ja mt-16" aria-labelledby="follow-title" data-section="home_follow">
+    <h2 id="follow-title" class="text-2xl font-bold md:text-3xl">Watch the videos</h2>
+    <div class="mt-6 grid gap-4 md:grid-cols-2">
+      <div class="card p-5">
+        <p class="flex items-center gap-2 font-bold"><Camera size={22} class="text-cyan" aria-hidden="true" /> Instagram {SOCIAL.instagram.handle}</p>
+        <p class="mt-2 text-muted">
+          AI Explained reels in Hinglish. Comment the keyword on a reel, then open the link in the bio to get the sheet.
+        </p>
+        <a
+          href={SOCIAL.instagram.url}
+          rel="noopener"
+          class="btn btn-secondary btn-small mt-4"
+          data-track="instagram_click"
+          data-track-params={JSON.stringify({ link_location: 'home_follow' })}>Open Instagram</a
+        >
+      </div>
+      <div class="card p-5">
+        <p class="flex items-center gap-2 font-bold"><CirclePlay size={22} class="text-cyan" aria-hidden="true" /> YouTube {SOCIAL.youtube.handle}</p>
+        <p class="mt-2 text-muted">The same episodes as YouTube Shorts, with sources in every description.</p>
+        <a
+          href={SOCIAL.youtube.url}
+          rel="noopener"
+          class="btn btn-secondary btn-small mt-4"
+          data-track="youtube_click"
+          data-track-params={JSON.stringify({ link_location: 'home_follow' })}>Open YouTube</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

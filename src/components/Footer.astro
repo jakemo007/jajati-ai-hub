@@ -1,0 +1,81 @@
+---
+import BrandMark from './BrandMark.astro';
+import { SITE, SOCIAL } from '../data/site';
+
+const year = new Date().getFullYear();
+const groups = [
+  {
+    title: 'Learn',
+    links: [
+      { href: '/prompts/', label: 'Prompt library' },
+      { href: '/free-resources/', label: 'Free cheat sheets' },
+      { href: '/episodes/', label: 'AI Explained episodes' },
+      { href: '/blog/', label: 'Blog' },
+    ],
+  },
+  {
+    title: 'About',
+    links: [
+      { href: '/about/', label: 'About Jajati AI' },
+      { href: '/contact/', label: 'Contact' },
+      { href: '/privacy-policy/', label: 'Privacy policy' },
+      { href: '/disclaimer/', label: 'Disclaimer' },
+    ],
+  },
+];
+---
+
+<footer class="mt-20 border-t border-line bg-surface/40" data-section="footer">
+  <div class="container-ja grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <div class="max-w-sm">
+      <a href="/" class="flex items-center gap-2.5 text-text no-underline">
+        <BrandMark size={30} />
+        <span class="font-bold">{SITE.fullName}</span>
+      </a>
+      <p class="mt-3 text-sm text-muted">{SITE.tagline}</p>
+      <p class="mt-2 text-sm text-muted">Free to read and download. No login, no DM needed.</p>
+    </div>
+    {
+      groups.map((g) => (
+        <nav aria-label={g.title}>
+          <h2 class="text-sm font-semibold text-text">{g.title}</h2>
+          <ul class="mt-3 grid gap-1">
+            {g.links.map((l) => (
+              <li>
+                <a href={l.href} class="inline-block py-1.5 text-sm text-muted no-underline hover:text-cyan-soft">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+    <div>
+      <h2 class="text-sm font-semibold text-text">Follow</h2>
+      <ul class="mt-3 grid gap-1">
+        <li>
+          <a
+            href={SOCIAL.instagram.url}
+            rel="noopener"
+            class="inline-block py-1.5 text-sm text-muted no-underline hover:text-cyan-soft"
+            >Instagram {SOCIAL.instagram.handle}</a
+          >
+        </li>
+        <li>
+          <a
+            href={SOCIAL.youtube.url}
+            rel="noopener"
+            class="inline-block py-1.5 text-sm text-muted no-underline hover:text-cyan-soft"
+            >YouTube {SOCIAL.youtube.handle}</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <p class="container-ja py-5 text-xs text-muted">
+      © {year} Jajati AI. Independent creator project, not affiliated with OpenAI, Google or any AI company.
+    </p>
+  </div>
+</footer>

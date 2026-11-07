@@ -1,0 +1,42 @@
+---
+import Share2 from '@lucide/astro/icons/share-2';
+import MessageCircle from '@lucide/astro/icons/message-circle';
+import { absolute } from '../utils/urls';
+
+interface Props {
+  title: string;
+  /** Path to share; defaults to the current page. */
+  path?: string;
+  /** Short line that goes before the link in WhatsApp. */
+  text?: string;
+  track?: Record<string, string>;
+}
+const { title, path = Astro.url.pathname, text, track = {} } = Astro.props;
+const url = absolute(path, Astro.site);
+const waText = `${text ?? title}\n${url}`;
+const waHref = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+---
+
+<div class="flex flex-wrap gap-2" data-section="share">
+  <button
+    type="button"
+    class="btn btn-secondary btn-small"
+    data-share
+    data-share-url={url}
+    data-share-title={title}
+    data-track-params={JSON.stringify(track)}
+  >
+    <Share2 size={18} aria-hidden="true" />
+    <span data-label>Share</span>
+  </button>
+  <a
+    href={waHref}
+    class="btn btn-secondary btn-small"
+    rel="noopener"
+    data-track="share"
+    data-track-params={JSON.stringify({ ...track, method: 'whatsapp' })}
+  >
+    <MessageCircle size={18} aria-hidden="true" />
+    WhatsApp
+  </a>
+</div>

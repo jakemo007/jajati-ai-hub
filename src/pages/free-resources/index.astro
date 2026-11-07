@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import { getResources } from '../../utils/content';
+import { absolute, paths } from '../../utils/urls';
+
+const resources = await getResources();
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Free AI cheat sheets',
+    url: absolute('/free-resources/', Astro.site),
+    hasPart: resources.map((r) => ({
+      '@type': 'LearningResource',
+      name: r.data.title,
+      url: absolute(paths.resource(r.id), Astro.site),
+      isAccessibleForFree: true,
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Free AI Cheat Sheets in Hindi (PDF + PNG)"
+  description="Free AI cheat sheets from the AI Explained series: 5 copy-paste ChatGPT prompts, catching AI hallucinations, and RAG with NotebookLM. No sign-up, no DM."
+  breadcrumbs={[{ label: 'Free cheat sheets' }]}
+  jsonLd={jsonLd}
+  pageType="resource_index"
+>
+  <section class="container-ja pt-6 md:pt-10">
+    <p class="eyebrow">Free resources</p>
+    <h1 class="mt-2 text-3xl font-extrabold md:text-5xl">Free AI cheat sheets</h1>
+    <p class="mt-3 max-w-2xl text-lg text-muted">
+      Commented a keyword on a reel? Your sheet is here. Every sheet is free to read, copy and download. No sign-up, no
+      DM, no follow needed.
+    </p>
+
+    <h2 class="mt-10 text-xl font-bold">Find your keyword</h2>
+    <ul class="mt-3 flex flex-wrap gap-2">
+      {
+        resources.map((r) => (
+          <li>
+            <a href={paths.resource(r.id)} class="btn btn-secondary btn-small">
+              <span class="font-extrabold text-cyan-soft">{r.data.keyword}</span>
+              <span class="text-muted">→ {r.data.shortTitle}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2 class="sr-only">All cheat sheets</h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {resources.map((r, i) => <ResourceCard resource={r} eager={i === 0} />)}
+    </div>
+
+    <p class="mt-10 max-w-2xl text-sm text-muted">
+      The sheets are made for phones (1080 × 1920). Prefer text? Every sheet's page also has its full text, and the
+      prompts have Copy buttons, so you never need to type a prompt from an image.
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,75 @@
+---
+import Copy from '@lucide/astro/icons/copy';
+import Star from '@lucide/astro/icons/star';
+import Pills from './Pills.astro';
+import type { Prompt } from '../utils/content';
+import { categoryLabel } from '../utils/content';
+import { paths } from '../utils/urls';
+
+interface Props {
+  prompt: Prompt;
+  /** Heading level inside the card. */
+  level?: 'h2' | 'h3';
+  showFav?: boolean;
+}
+
+const { prompt, level = 'h3', showFav = true } = Astro.props;
+const d = prompt.data;
+const Heading = level;
+const textId = `card-prompt-${prompt.id}`;
+const track = JSON.stringify({
+  prompt_id: prompt.id,
+  prompt_title: d.title,
+  category: d.category,
+  tool: d.tools.join(','),
+  link_location: 'card',
+});
+const search = [d.title, d.description, d.prompt, categoryLabel(d.category), d.problem].join(' ').toLowerCase();
+---
+
+<article
+  class="card card-link flex h-full flex-col gap-3 p-4 md:p-5"
+  data-prompt-card
+  data-id={prompt.id}
+  data-category={d.category}
+  data-tools={d.tools.join(' ')}
+  data-difficulty={d.difficulty}
+  data-added={d.added.toISOString()}
+  data-search={search}
+>
+  <Heading class="text-lg font-bold leading-snug">
+    <a href={paths.prompt(prompt.id)} class="text-text no-underline hover:text-cyan-soft">{d.title}</a>
+  </Heading>
+  <p class="text-[0.95rem] text-muted">{d.description}</p>
+  <Pills category={d.category} tools={d.tools} difficulty={d.difficulty} />
+  {/* Padding sits on the wrapper: a clamped element with padding shows part of the next line. */}
+  <div class="prompt-text !p-3 !text-[0.95rem] !whitespace-normal">
+    <pre
+      id={textId}
+      lang={d.promptLang}
+      class="line-clamp-3 whitespace-pre-wrap font-sans"
+      aria-label={`Prompt text: ${d.title}`}>{d.prompt}</pre>
+  </div>
+  <div class="mt-auto flex flex-wrap gap-2 pt-1">
+    <button type="button" class="btn btn-primary btn-small" data-copy={`#${textId}`} data-track-params={track}>
+      <Copy size={18} aria-hidden="true" />
+      <span data-label>Copy</span>
+    </button>
+    <a href={paths.prompt(prompt.id)} class="btn btn-secondary btn-small">How to use</a>
+    {
+      showFav && (
+        <button
+          type="button"
+          class="btn btn-secondary btn-small"
+          data-fav={prompt.id}
+          aria-pressed="false"
+          data-track-params={track}
+          title="Save to favourites in this browser"
+        >
+          <Star size={18} aria-hidden="true" />
+          <span data-label>Save</span>
+        </button>
+      )
+    }
+  </div>
+</article>

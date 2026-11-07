@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LEARN_CATEGORIES } from '../../data/taxonomy';
+import { formatDate, getBlogPosts } from '../../utils/content';
+import { paths } from '../../utils/urls';
+
+const posts = await getBlogPosts();
+const usedCategories = Object.entries(LEARN_CATEGORIES).filter(([id]) => posts.some((p) => p.data.category === id));
+---
+
+<BaseLayout
+  title="Blog: Practical AI in Simple Hindi"
+  description="Articles on prompt engineering, AI fundamentals, RAG and AI agents from Jajati AI. Only useful, checked content."
+  breadcrumbs={[{ label: 'Blog' }]}
+  pageType="blog_index"
+  noindex={posts.length === 0}
+>
+  <section class="container-ja max-w-3xl pt-6 md:pt-10">
+    <p class="eyebrow">Blog</p>
+    <h1 class="mt-2 text-3xl font-extrabold md:text-5xl">Blog</h1>
+    {
+      posts.length === 0 ? (
+        <div class="card mt-6 p-5 md:p-6">
+          <h2 class="text-xl font-bold">No posts yet</h2>
+          <p class="mt-2 text-muted">
+            The first articles are being written. Only useful, fact-checked posts go here, no filler. Until then, the
+            AI Explained lessons and the prompt library have everything published so far.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a href="/episodes/" class="btn btn-primary btn-small">
+              Read the episodes
+            </a>
+            <a href="/prompts/" class="btn btn-secondary btn-small">
+              Browse prompts
+            </a>
+          </div>
+        </div>
+      ) : (
+        <>
+          {usedCategories.length > 1 && (
+            <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Categories">
+              {usedCategories.map(([, label]) => (
+                <li class="pill">{label}</li>
+              ))}
+            </ul>
+          )}
+          <ul class="mt-8 grid gap-4">
+            {posts.map((p) => (
+              <li class="card p-5">
+                <p class="text-sm text-muted">
+                  {LEARN_CATEGORIES[p.data.category]} · {formatDate(p.data.published)}
+                </p>
+                <h2 class="mt-1 text-xl font-bold">
+                  <a href={paths.blog(p.id)} class="text-text no-underline hover:text-cyan-soft">
+                    {p.data.title}
+                  </a>
+                </h2>
+                <p class="mt-1 text-muted">{p.data.description}</p>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </section>
+</BaseLayout>

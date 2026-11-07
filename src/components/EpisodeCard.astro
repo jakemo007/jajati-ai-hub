@@ -1,0 +1,62 @@
+---
+import CircleCheck from '@lucide/astro/icons/circle-check';
+import type { Episode } from '../utils/content';
+import { learnCategoryLabel, readingTime } from '../utils/content';
+import { paths } from '../utils/urls';
+
+interface Props {
+  episode: Episode;
+  level?: 'h2' | 'h3';
+}
+const { episode, level = 'h3' } = Astro.props;
+const d = episode.data;
+const Heading = level;
+const published = d.status === 'published';
+const minutes = published ? readingTime(episode.body) : 0;
+const search = [d.title, d.headline, d.description, learnCategoryLabel(d.category)].join(' ').toLowerCase();
+---
+
+<article
+  class:list={['card flex h-full flex-col gap-3 p-4 md:p-5', published ? 'card-link' : 'border-dashed opacity-90']}
+  data-episode-card
+  data-status={d.status}
+  data-search={search}
+>
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="eyebrow">{d.number ? `Episode ${d.number}` : 'Coming soon'}</span>
+    {
+      published ? (
+        <span class="pill">Published</span>
+      ) : (
+        <span class="pill border-warn/50 text-warn">Coming soon</span>
+      )
+    }
+    {
+      published && (
+        <span class="pill border-ok/50 text-ok" data-progress-for={episode.id} hidden>
+          <CircleCheck size={14} aria-hidden="true" /> Completed
+        </span>
+      )
+    }
+  </div>
+  <Heading class="text-lg font-bold leading-snug">
+    {
+      published ? (
+        <a href={paths.episode(episode.id)} class="text-text no-underline hover:text-cyan-soft">
+          {d.title}
+        </a>
+      ) : (
+        d.title
+      )
+    }
+  </Heading>
+  <p class="text-[0.95rem] text-muted">{d.description}</p>
+  {d.note && !published && <p class="text-sm text-muted">{d.note}</p>}
+  <ul class="mt-auto flex flex-wrap gap-1.5 pt-1" aria-label="Details">
+    <li class="pill pill-accent">{learnCategoryLabel(d.category)}</li>
+    <li class="pill">{d.difficulty}</li>
+    {published && <li class="pill">{minutes} min read</li>}
+    {d.videos.youtube && <li class="pill">YouTube video</li>}
+    {d.videos.instagram && <li class="pill">Instagram reel</li>}
+  </ul>
+</article>

@@ -1,0 +1,177 @@
+---
+import Search from '@lucide/astro/icons/search';
+import Star from '@lucide/astro/icons/star';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PromptCard from '../../components/PromptCard.astro';
+import { DIFFICULTIES, PROMPT_CATEGORIES, TOOLS, type PromptCategoryId, type ToolId } from '../../data/taxonomy';
+import { getPrompts } from '../../utils/content';
+import { absolute, paths } from '../../utils/urls';
+
+const prompts = await getPrompts();
+const usedCategories = (Object.keys(PROMPT_CATEGORIES) as PromptCategoryId[]).filter((c) =>
+  prompts.some((p) => p.data.category === c),
+);
+const usedTools = (Object.keys(TOOLS) as ToolId[]).filter((t) => prompts.some((p) => p.data.tools.includes(t)));
+const usedDifficulties = DIFFICULTIES.filter((d) => prompts.some((p) => p.data.difficulty === d));
+
+const popular = prompts.filter((p) => p.data.featured).slice(0, 6);
+const recent = [...prompts].sort((a, b) => b.data.added.getTime() - a.data.added.getTime()).slice(0, 5);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Free AI prompt library',
+    url: absolute('/prompts/', Astro.site),
+    hasPart: prompts.map((p) => ({
+      '@type': 'CreativeWork',
+      name: p.data.title,
+      url: absolute(paths.prompt(p.id), Astro.site),
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Free ChatGPT Prompts in Hindi: Copy-Paste Prompt Library"
+  description="Free copy-paste AI prompts in Hinglish for resumes, interviews, padhai, office emails and business posts. Search, filter, copy in one tap. No login."
+  breadcrumbs={[{ label: 'Prompts' }]}
+  jsonLd={jsonLd}
+  pageType="prompt_index"
+>
+  <section class="container-ja pt-6 md:pt-10">
+    <p class="eyebrow">Prompt library</p>
+    <h1 class="mt-2 text-3xl font-extrabold md:text-5xl">Free copy-paste AI prompts</h1>
+    <p class="mt-3 max-w-2xl text-lg text-muted">
+      Prompts from the AI Explained videos and cheat sheets. Copy one, paste it into ChatGPT or Gemini, and fill the
+      <mark class="rounded bg-cyan/15 px-1 text-cyan-soft">[brackets]</mark> with your details.
+    </p>
+    <p class="mt-3 text-sm">
+      Looking for the PDF? <a href={paths.resource('chatgpt-prompt-cheatsheet')}>Get the PROMPT sheet</a>.
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      <section class="card p-4 md:p-5" aria-labelledby="popular-title">
+        <h2 id="popular-title" class="text-lg font-bold">Popular: the PROMPT sheet set</h2>
+        <ol class="mt-3 grid gap-1">
+          {
+            popular.map((p) => (
+              <li>
+                <a href={paths.prompt(p.id)} class="block py-1.5 no-underline hover:underline">
+                  {p.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+      <section class="card p-4 md:p-5" aria-labelledby="recent-title">
+        <h2 id="recent-title" class="text-lg font-bold">Recently added</h2>
+        <ol class="mt-3 grid gap-1">
+          {
+            recent.map((p) => (
+              <li>
+                <a href={paths.prompt(p.id)} class="block py-1.5 no-underline hover:underline">
+                  {p.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+    </div>
+  </section>
+
+  <section class="container-ja mt-12" aria-labelledby="all-title">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <h2 id="all-title" class="text-2xl font-bold">All prompts</h2>
+      <p id="result-count" class="text-sm text-muted" aria-live="polite">{prompts.length} prompts</p>
+    </div>
+
+    <form class="mt-4 grid gap-4" data-prompt-filters hidden role="search" aria-label="Search and filter prompts">
+      <div class="relative">
+        <label for="prompt-search" class="sr-only">Search prompts</label>
+        <Search size={20} class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" aria-hidden="true" />
+        <input
+          id="prompt-search"
+          name="q"
+          type="search"
+          class="field pl-10"
+          placeholder="Search: resume, email, interview, padhai…"
+          autocomplete="off"
+          enterkeyhint="search"
+        />
+      </div>
+
+      <fieldset>
+        <legend class="mb-2 text-sm font-semibold text-muted">Category</legend>
+        <div class="flex flex-wrap gap-2">
+          {
+            usedCategories.map((c) => (
+              <button type="button" class="chip-toggle" data-filter-group="category" data-value={c} aria-pressed="false">
+                {PROMPT_CATEGORIES[c].label}
+              </button>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <div class="grid gap-4 md:grid-cols-[auto_auto_1fr] md:items-start">
+        <fieldset>
+          <legend class="mb-2 text-sm font-semibold text-muted">Tool</legend>
+          <div class="flex flex-wrap gap-2">
+            {
+              usedTools.map((t) => (
+                <button type="button" class="chip-toggle" data-filter-group="tool" data-value={t} aria-pressed="false">
+                  {TOOLS[t].label}
+                </button>
+              ))
+            }
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="mb-2 text-sm font-semibold text-muted">Difficulty</legend>
+          <div class="flex flex-wrap gap-2">
+            {
+              usedDifficulties.map((d) => (
+                <button type="button" class="chip-toggle" data-filter-group="difficulty" data-value={d} aria-pressed="false">
+                  {d}
+                </button>
+              ))
+            }
+          </div>
+        </fieldset>
+        <fieldset data-needs-storage>
+          <legend class="mb-2 text-sm font-semibold text-muted">Favourites</legend>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" class="chip-toggle gap-1.5" data-filter-saved aria-pressed="false">
+              <Star size={16} aria-hidden="true" /> Saved only (<span data-fav-count>0</span>)
+            </button>
+            <button type="button" class="btn btn-secondary btn-small" data-filter-clear hidden>Clear filters</button>
+          </div>
+        </fieldset>
+      </div>
+      <p class="text-xs text-muted" data-needs-storage>
+        Favourites are saved in this browser only. They are not synced between devices and clear if you clear your
+        browser data.
+      </p>
+    </form>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="prompt-results">
+      {
+        prompts.map((p) => (
+          <li class="contents">
+            <PromptCard prompt={p} />
+          </li>
+        ))
+      }
+    </ul>
+    <p id="no-results" class="mt-6 rounded-xl border border-line p-6 text-center text-muted" hidden>
+      No prompt matches. Try a different word, or clear the filters.
+    </p>
+  </section>
+
+  <script>
+    import '../../scripts/prompt-filter.ts';
+  </script>
+</BaseLayout>

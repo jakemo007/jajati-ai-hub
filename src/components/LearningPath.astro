@@ -1,0 +1,62 @@
+---
+/**
+ * The AI Explained learning path: published episodes in order, then what is coming.
+ * Completion ticks come from localStorage (see src/scripts/ui.ts).
+ */
+import CircleCheck from '@lucide/astro/icons/circle-check';
+import type { Episode } from '../utils/content';
+import { paths } from '../utils/urls';
+
+interface Props {
+  episodes: Episode[];
+  currentId?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+const { episodes, currentId, headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const published = episodes.filter((e) => e.data.status === 'published');
+const next = episodes.find((e) => e.data.status === 'coming-soon');
+const ids = published.map((e) => e.id).join(',');
+---
+
+<nav class="card p-4 md:p-5" aria-labelledby="path-title">
+  <H id="path-title" class="text-lg font-bold">Learning path: AI Explained</H>
+  <p class="mt-1 text-sm text-muted" data-needs-storage>
+    <span data-progress-count={ids}>0</span> of {published.length} completed. Progress is saved in this browser only, not
+    across devices.
+  </p>
+  <ol class="mt-3 grid gap-1">
+    {
+      published.map((e) => (
+        <li>
+          <a
+            href={paths.episode(e.id)}
+            class:list={[
+              'flex items-center gap-3 rounded-lg px-2 py-2 no-underline',
+              e.id === currentId ? 'bg-raised text-text' : 'text-text hover:bg-raised',
+            ]}
+            aria-current={e.id === currentId ? 'page' : undefined}
+          >
+            <span class="w-6 shrink-0 text-center text-sm font-bold text-muted">{e.data.number}</span>
+            <span class="flex-1">{e.data.title}</span>
+            <span data-progress-for={e.id} hidden class="text-ok">
+              <CircleCheck size={18} aria-label="completed" />
+            </span>
+          </a>
+        </li>
+      ))
+    }
+    {
+      next && (
+        <li class="flex items-center gap-3 px-2 py-2 text-muted">
+          <span class="w-6 shrink-0 text-center text-sm" aria-hidden="true">
+            →
+          </span>
+          <span class="flex-1">
+            {next.data.title} <span class="text-xs">(coming soon)</span>
+          </span>
+        </li>
+      )
+    }
+  </ol>
+</nav>

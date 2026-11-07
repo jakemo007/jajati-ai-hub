@@ -1,0 +1,72 @@
+---
+/**
+ * The 4-part prompt formula (Episode 5): Role, Context, Task, Format.
+ * The examples are the resume prompt from the PROMPT cheat sheet.
+ */
+interface Props {
+  /** Hide the example lines for a compact version. */
+  compact?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { compact = false, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+
+const parts = [
+  {
+    n: 1,
+    name: 'Role',
+    what: 'Tell AI who it should act as.',
+    hi: 'AI kaun banega?',
+    example: 'Tum 10 saal ke HR expert ho.',
+    color: 'border-t-cyan',
+  },
+  {
+    n: 2,
+    name: 'Context',
+    what: 'Explain your situation and the details that matter.',
+    hi: 'Tumhari situation kya hai?',
+    example: 'Main fresher hoon, Python aur SQL aata hai, data analyst job chahiye.',
+    color: 'border-t-blue',
+  },
+  {
+    n: 3,
+    name: 'Task',
+    what: 'Say exactly what needs to be done.',
+    hi: 'Exactly kya chahiye?',
+    example: 'Mere projects ke basis par 1 page ka resume banao, projects sabse upar.',
+    color: 'border-t-ok',
+  },
+  {
+    n: 4,
+    name: 'Format',
+    what: 'Define the shape of the answer.',
+    hi: 'Jawab kis shape mein?',
+    example: 'Bullet points mein, har point 10 words se kam.',
+    color: 'border-t-warn',
+  },
+];
+---
+
+<ol class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="The 4-part prompt formula">
+  {
+    parts.map((p) => (
+      <li class:list={['card border-t-4 p-4', p.color]}>
+        <p class="flex items-baseline gap-2">
+          <span class="text-sm font-bold text-muted" aria-hidden="true">
+            {p.n}
+          </span>
+          <H class="text-xl font-extrabold tracking-tight">{p.name}</H>
+        </p>
+        <p class="mt-1 text-[0.95rem]">{p.what}</p>
+        <p class="mt-1 text-sm text-muted" lang="hi-Latn">
+          {p.hi}
+        </p>
+        {!compact && (
+          <p class="mt-3 rounded-lg bg-raised px-3 py-2 text-sm" lang="hi-Latn">
+            <span class="sr-only">Example: </span>“{p.example}”
+          </p>
+        )}
+      </li>
+    ))
+  }
+</ol>

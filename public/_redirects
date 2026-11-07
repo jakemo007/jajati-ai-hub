@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects (https://developers.cloudflare.com/pages/configuration/redirects/)
+# Short, typeable paths for spoken or written CTAs. Keep in sync with SHORT_LINKS in astro.config.mjs.
+# 302 = temporary, so the target can change later without browsers caching it forever.
+/prompt  /free-resources/chatgpt-prompt-cheatsheet/?utm_source=shortlink&utm_medium=referral&utm_campaign=prompt  302
+/sach    /free-resources/ai-hallucination-cheatsheet/?utm_source=shortlink&utm_medium=referral&utm_campaign=sach  302
+/rag     /free-resources/rag-notebooklm-cheatsheet/?utm_source=shortlink&utm_medium=referral&utm_campaign=rag  302
+/prompt/ /free-resources/chatgpt-prompt-cheatsheet/?utm_source=shortlink&utm_medium=referral&utm_campaign=prompt  302
+/sach/   /free-resources/ai-hallucination-cheatsheet/?utm_source=shortlink&utm_medium=referral&utm_campaign=sach  302
+/rag/    /free-resources/rag-notebooklm-cheatsheet/?utm_source=shortlink&utm_medium=referral&utm_campaign=rag  302

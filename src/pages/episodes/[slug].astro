@@ -1,0 +1,223 @@
+---
+import { getEntries, getEntry, render } from 'astro:content';
+import ArrowLeft from '@lucide/astro/icons/arrow-left';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import CircleCheck from '@lucide/astro/icons/circle-check';
+import Download from '@lucide/astro/icons/download';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PromptCard from '../../components/PromptCard.astro';
+import LearningPath from '../../components/LearningPath.astro';
+import Quiz from '../../components/Quiz.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import VideoLinks from '../../components/VideoLinks.astro';
+import { formatDate, getEpisodes, learnCategoryLabel, readingTime, type Episode } from '../../utils/content';
+import { absolute, paths } from '../../utils/urls';
+
+export async function getStaticPaths() {
+  const episodes = await getEpisodes();
+  // Coming Soon topics get no page, so there is never a half-empty article.
+  return episodes
+    .filter((e) => e.data.status === 'published')
+    .map((episode) => ({ params: { slug: episode.id }, props: { episode } }));
+}
+
+interface Props {
+  episode: Episode;
+}
+const { episode } = Astro.props;
+const d = episode.data;
+const { Content } = await render(episode);
+const all = await getEpisodes();
+const published = all.filter((e) => e.data.status === 'published');
+const idx = published.findIndex((e) => e.id === episode.id);
+const prev = idx > 0 ? published[idx - 1] : undefined;
+const next = idx >= 0 && idx < published.length - 1 ? published[idx + 1] : undefined;
+const comingNext = all.find((e) => e.data.status === 'coming-soon');
+const prompts = (await getEntries(d.relatedPrompts)).filter((p) => p.data.status === 'published');
+const resource = d.resource ? await getEntry(d.resource) : undefined;
+const minutes = readingTime(episode.body);
+const label = `Episode ${d.number}`;
+const track = { episode_id: episode.id, episode_title: d.title };
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.headline,
+    description: d.description,
+    url: absolute(paths.episode(episode.id), Astro.site),
+    inLanguage: 'hi-Latn',
+    ...(d.published ? { datePublished: d.published.toISOString() } : {}),
+    ...(d.updated ? { dateModified: d.updated.toISOString() } : {}),
+    author: { '@type': 'Organization', name: 'Jajati AI', url: absolute('/about/', Astro.site) },
+    publisher: { '@type': 'Organization', name: 'Jajati AI' },
+    isPartOf: { '@type': 'CreativeWorkSeries', name: 'AI Explained' },
+    isAccessibleForFree: true,
+    citation: d.sources.map((s) => s.url),
+  },
+];
+---
+
+<BaseLayout
+  title={d.seoTitle ?? d.headline}
+  description={d.description}
+  ogType="article"
+  ogImage={resource?.data.ogImage}
+  breadcrumbs={[{ label: 'Episodes', href: '/episodes/' }, { label: `${label}: ${d.title}` }]}
+  jsonLd={jsonLd}
+  pageType="episode"
+  pageEvent="episode_view"
+  pageParams={track}
+  published={d.published}
+  modified={d.updated}
+>
+  <div class="container-ja pt-6 md:pt-10">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
+      <article>
+        <header>
+          <p class="eyebrow">AI Explained · {label}</p>
+          <h1 class="mt-2 text-3xl font-extrabold md:text-4xl">{d.headline}</h1>
+          <p class="mt-3 text-lg text-muted">{d.description}</p>
+          <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Details">
+            <li class="pill pill-accent">{learnCategoryLabel(d.category)}</li>
+            <li class="pill">{d.difficulty}</li>
+            <li class="pill">{minutes} min read</li>
+            {d.published && <li class="pill">Video posted {formatDate(d.published)}</li>}
+            <li class="pill border-ok/50 text-ok" data-progress-for={episode.id} hidden>
+              <CircleCheck size={14} aria-hidden="true" /> Completed
+            </li>
+          </ul>
+          <div class="mt-5">
+            <VideoLinks youtube={d.videos.youtube} instagram={d.videos.instagram} track={track} location="episode_top" />
+          </div>
+        </header>
+
+        <div class="prose-ja mt-8" lang="hi-Latn">
+          <Content />
+        </div>
+
+        {
+          resource && (
+            <aside class="card mt-10 border-cyan/40 p-5" aria-labelledby="sheet-title">
+              <p class="eyebrow">Free cheat sheet for this episode</p>
+              <h2 id="sheet-title" class="mt-1 text-xl font-bold">
+                {resource.data.shortTitle}
+              </h2>
+              <p class="mt-1 text-muted">
+                The reel asked you to comment <strong class="text-text">{resource.data.keyword}</strong>. Skip the DM:
+                the sheet is right here.
+              </p>
+              <a href={paths.resource(resource.id)} class="btn btn-primary btn-small mt-4">
+                <Download size={18} aria-hidden="true" /> Get the {resource.data.keyword} sheet
+              </a>
+            </aside>
+          )
+        }
+
+        {
+          prompts.length > 0 && (
+            <section class="mt-12" aria-labelledby="prompts-title">
+              <h2 id="prompts-title" class="text-2xl font-bold">
+                Try it: related prompts
+              </h2>
+              <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+                {prompts.map((p) => (
+                  <li class="contents">
+                    <PromptCard prompt={p} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        <div class="mt-12">
+          <Quiz id={episode.id} title={d.title} questions={d.quiz} />
+        </div>
+
+        <section class="mt-8 flex flex-wrap items-center gap-3" aria-label="Your progress" data-needs-storage>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-complete={episode.id}
+            aria-pressed="false"
+            data-track-params={JSON.stringify(track)}
+          >
+            <CircleCheck size={20} aria-hidden="true" />
+            <span data-label>Mark as completed</span>
+          </button>
+          <span class="text-sm text-muted">Saved in this browser only.</span>
+        </section>
+
+        {
+          d.sources.length > 0 && (
+            <section class="mt-12" aria-labelledby="sources-title">
+              <h2 id="sources-title" class="text-xl font-bold">
+                Sources
+              </h2>
+              <ul class="mt-3 grid gap-2 text-[0.95rem]">
+                {d.sources.map((s) => (
+                  <li>
+                    <a href={s.url} rel="noopener">
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        <nav class="mt-12 grid gap-3 sm:grid-cols-2" aria-label="Episode navigation">
+          {
+            prev ? (
+              <a href={paths.episode(prev.id)} class="card card-link flex items-center gap-3 p-4 text-text no-underline">
+                <ArrowLeft size={20} class="shrink-0 text-muted" aria-hidden="true" />
+                <span>
+                  <span class="block text-sm text-muted">Previous: Episode {prev.data.number}</span>
+                  <span class="font-semibold">{prev.data.title}</span>
+                </span>
+              </a>
+            ) : (
+              <span />
+            )
+          }
+          {
+            next ? (
+              <a
+                href={paths.episode(next.id)}
+                class="card card-link flex items-center justify-end gap-3 p-4 text-right text-text no-underline"
+                data-track="next_episode_click"
+                data-track-params={JSON.stringify({ ...track, link_location: 'episode_nav' })}
+              >
+                <span>
+                  <span class="block text-sm text-muted">Next: Episode {next.data.number}</span>
+                  <span class="font-semibold">{next.data.title}</span>
+                </span>
+                <ArrowRight size={20} class="shrink-0 text-muted" aria-hidden="true" />
+              </a>
+            ) : (
+              comingNext && (
+                <div class="card border-dashed p-4 text-right">
+                  <span class="block text-sm text-muted">Next episode (coming soon)</span>
+                  <span class="font-semibold">{comingNext.data.title}</span>
+                </div>
+              )
+            )
+          }
+        </nav>
+
+        <section class="mt-10" aria-labelledby="share-title">
+          <h2 id="share-title" class="text-lg font-bold">Share this lesson</h2>
+          <div class="mt-3">
+            <ShareButtons title={d.headline} text={`AI Explained ${label}: ${d.title}`} track={track} />
+          </div>
+        </section>
+      </article>
+
+      <aside class="lg:sticky lg:top-24">
+        <LearningPath episodes={all} currentId={episode.id} />
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
