@@ -1,7 +1,7 @@
 # Handover: Jajati AI hub, first version (7 Nov 2026)
 
-Status: **on GitHub** (`jakemo007/jajati-ai-hub`, public). Cloudflare project `jajati-ai-hub` created as a Worker;
-the first deploy failed (Wrangler auto-configured an adapter) and is fixed by `wrangler.jsonc`. See `docs/deployment.md`.
+Status: **on GitHub** (`jakemo007/jajati-ai-hub`, public). Hosting: Cloudflare Pages at `https://jajati-ai-hub.pages.dev`
+(see `docs/deployment.md`). A Worker created first by mistake is to be deleted once Pages is live.
 
 | Deliverable | Where |
 | --- | --- |

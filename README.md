@@ -4,7 +4,7 @@ Free AI prompts, cheat sheets and short lessons in simple Hindi. This is the web
 "AI Explained" Reels and Shorts by [@jakemo007](https://www.instagram.com/jakemo007/) and [@jajatiai](https://www.youtube.com/@jajatiai).
 
 - Static site: [Astro](https://astro.build) 5 + TypeScript + Tailwind CSS 4
-- Hosting: Cloudflare Workers static assets (Free plan), configured by `wrangler.jsonc`. No server code, no database, no login.
+- Hosting: Cloudflare Pages (Free plan) at https://jajati-ai-hub.pages.dev. No server code, no database, no login.
 - Content lives in Markdown files under `src/content/`.
 
 ## Quick start
@@ -98,14 +98,14 @@ shows it only once you add one.
 
 ## Configuration (environment variables)
 
-Copy `.env.example` to `.env` for local builds, or set these in Cloudflare: Worker → Settings → Build → **Build variables and secrets** (they are read at build time).
+Copy `.env.example` to `.env` for local builds, or set these in Cloudflare Pages → Settings → Variables and secrets (they are read at build time).
 All are optional.
 
 | Variable | Used for |
 | --- | --- |
 | `SITE_URL` | The public address, e.g. `https://jajati-ai-hub.pages.dev` or your own domain. Used for canonical URLs, the sitemap, robots.txt and social previews. Default: `https://jajati-ai-hub.pages.dev` |
 | `PUBLIC_GA4_ID` | Google Analytics 4 Measurement ID (`G-XXXXXXX`). Empty = no GA4 script, no cookies |
-| `PUBLIC_CF_ANALYTICS_TOKEN` | Cloudflare Web Analytics token (Analytics & Logs → Web Analytics → Add a site). Empty = no beacon |
+| `PUBLIC_CF_ANALYTICS_TOKEN` | Cloudflare Web Analytics token, only when **not** using the one-click setup in Pages (e.g. hosting as a Worker). Empty = no beacon |
 
 Details: [docs/analytics.md](docs/analytics.md). Deployment: [docs/deployment.md](docs/deployment.md).
 SEO: [docs/seo-checklist.md](docs/seo-checklist.md). Instagram and YouTube links: [docs/instagram-links.md](docs/instagram-links.md).
@@ -144,5 +144,6 @@ They are listed twice, on purpose:
 - **Port 4321 is busy:** stop the other `astro dev` or `astro preview`, or run `npx astro preview --port 4322`.
 - **Cloudflare deploy fails with "Invalid _redirects configuration: Duplicate rule for path":** something added the
   `@astrojs/cloudflare` adapter, which writes the short links into `_redirects` a second time. This site must stay static:
-  keep `wrangler.jsonc` in the repo (without it, `wrangler deploy` auto-adds the adapter) and do not run `astro add cloudflare`.
+  do not run `astro add cloudflare`. If you ever deploy as a Worker, keep `wrangler.jsonc` in the repo (without it,
+  `wrangler deploy` auto-adds the adapter). See `docs/deployment.md`.
   `npm run check:dist` fails on duplicate redirect rules.
