@@ -1,11 +1,11 @@
 # Handover: Jajati AI hub, first version (7 Nov 2026)
 
-Status: **built and tested locally. Not committed, not pushed, not deployed.** No GitHub repository, Cloudflare
-project or analytics account has been created.
+Status: **on GitHub** (`jakemo007/jajati-ai-hub`, public). Cloudflare project `jajati-ai-hub` created as a Worker;
+the first deploy failed (Wrangler auto-configured an adapter) and is fixed by `wrangler.jsonc`. See `docs/deployment.md`.
 
 | Deliverable | Where |
 | --- | --- |
-| Source code | `C:\Github\jajati-ai-hub` (git initialised, no commits yet) |
+| Source code | `C:\Github\jajati-ai-hub`, https://github.com/jakemo007/jajati-ai-hub |
 | Run it locally | `npm install`, then `npm run dev` or `npm run build && npm run preview` → http://localhost:4321 |
 | How it works, how to add content | `README.md`, `docs/templates/` |
 | Test report | `docs/test-report.md` |
@@ -83,11 +83,10 @@ Each has a text version from the script, sources, a 3-question quiz, related pro
 ## What you need to do
 
 1. **Review the site** locally: `npm run preview`, open http://localhost:4321 (and the screenshots in `tests/output/`).
-2. **Say yes to commit**, then create the GitHub repository and Cloudflare Pages project (`docs/deployment.md`, steps 1 to 6).
-   Claude has not done these and will only do them with your OK.
-3. Set `SITE_URL` in Cloudflare to the real address.
+2. ~~Create the GitHub repository and Cloudflare project~~ (done 7 Nov; see `docs/deployment.md`).
+3. Set the `SITE_URL` **build** variable in Cloudflare to the real address (`docs/deployment.md` steps 3 and 4).
 4. **Test on your phone inside the Instagram app**: open the PROMPT sheet link from a DM, try Download and Copy.
-5. Turn on Cloudflare Web Analytics (one click). Optional: GA4 for campaigns and downloads (`docs/analytics.md`).
+5. Turn on Cloudflare Web Analytics (`docs/deployment.md` step 6). Optional: GA4 for campaigns and downloads (`docs/analytics.md`).
 6. Update the Instagram bio and link, the YouTube channel link (`docs/instagram-links.md`).
 7. **Reply to the 4 people waiting for the PROMPT sheet** with the reply text in `docs/instagram-links.md`
    (after step 6, so the bio link works).

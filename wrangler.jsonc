@@ -1,0 +1,15 @@
+// Cloudflare Workers static-assets deployment (used by `npx wrangler deploy` in Workers Builds).
+// The site is fully static: no Worker script, no Astro adapter. Having this file stops Wrangler from
+// auto-configuring the project (which would add @astrojs/cloudflare and server rendering).
+// public/_redirects and public/_headers are copied into dist/ and applied by Cloudflare.
+{
+  "name": "jajati-ai-hub",
+  "compatibility_date": "2026-11-07",
+  "assets": {
+    "directory": "./dist",
+    // Unknown URLs get dist/404.html with a real 404 status.
+    "not_found_handling": "404-page",
+    // /prompts/ style URLs (folder index files) are served with a trailing slash.
+    "html_handling": "auto-trailing-slash"
+  }
+}

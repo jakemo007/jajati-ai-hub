@@ -16,19 +16,22 @@ Events still run through the analytics utility, but they only go into a small li
 | Custom events (downloads, copies, quiz) | **No** ("not yet" in Cloudflare's docs) | Yes |
 | UTM campaigns (which Reel sent the visit) | **No** (does not log query strings) | Yes |
 | Blocked by ad blockers | Can be | Can be |
-| Setup | One click in Cloudflare Pages | Create a GA4 property, set `PUBLIC_GA4_ID` |
+| Setup | Add a site, set `PUBLIC_CF_ANALYTICS_TOKEN` (one click on Pages) | Create a GA4 property, set `PUBLIC_GA4_ID` |
 
-**Recommendation:** turn on Cloudflare Web Analytics on day one (it is one click and needs no cookie notice).
+**Recommendation:** turn on Cloudflare Web Analytics on day one (5 minutes, no cookie notice needed).
 Add GA4 when you want to know which Reel sends visitors and how many people download or copy. Both can run together.
 
 ### Cloudflare Web Analytics (page views)
 
-1. Cloudflare dashboard → **Workers & Pages** → your project → **Metrics** → Web Analytics → **Enable**.
-2. Cloudflare adds its script automatically on the next deployment. Redeploy once.
-3. Do **not** also set `PUBLIC_CF_ANALYTICS_TOKEN`. Two beacons would count every visit twice.
+This site is deployed as a Cloudflare **Worker** (static assets), so use the token:
 
-`PUBLIC_CF_ANALYTICS_TOKEN` exists only for hosting outside Cloudflare Pages, or if you prefer the manual snippet:
-Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site → copy the `token` value from the snippet.
+1. Cloudflare dashboard → **Analytics & Logs** → **Web Analytics** → **Add a site** → enter the site's address.
+2. From the JS snippet it shows, copy only the `token` value.
+3. Worker → Settings → Build → **Build variables and secrets** → add `PUBLIC_CF_ANALYTICS_TOKEN` = the token.
+4. Redeploy. The site then loads Cloudflare's beacon on every page.
+
+If you ever move to a **Pages** project instead: Pages → project → **Metrics** → Web Analytics → **Enable** injects the
+beacon automatically. In that case do **not** also set the token, or every visit counts twice.
 
 ### Google Analytics 4 (events and campaigns)
 

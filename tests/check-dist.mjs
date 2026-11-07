@@ -233,6 +233,19 @@ else {
     .filter((l) => l && !l.startsWith('#'))
     .map((l) => l.split(/\s+/));
   const bySource = new Map(rules.map(([src, dest, code]) => [src, { dest, code }]));
+  // Cloudflare rejects the whole deploy on a duplicate source ("Duplicate rule for path ...").
+  // This happens if an Astro adapter appends its own copy of the `redirects` config.
+  if (bySource.size !== rules.length) {
+    const seen = new Set();
+    for (const [src] of rules) {
+      if (seen.has(src)) fail(`_redirects has a duplicate rule for ${src} (Cloudflare refuses to deploy this)`);
+      seen.add(src);
+    }
+  }
+  for (const [src, dest, code] of rules) {
+    if (!dest) fail(`_redirects rule for ${src} has no destination`);
+    if (code && !['301', '302', '303', '307', '308'].includes(code)) fail(`_redirects rule for ${src} has unsupported status ${code}`);
+  }
   for (const [src, dest] of Object.entries(SHORT_LINKS)) {
     for (const variant of [src, src + '/']) {
       const rule = bySource.get(variant);
