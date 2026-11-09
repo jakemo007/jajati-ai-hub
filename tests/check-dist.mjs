@@ -314,6 +314,28 @@ for (const f of files) {
   }
 }
 
+/* ------------------------------------------------------------------ notebooks (GitHub only, never in the site) */
+for (const f of files) if (/\.ipynb$/i.test(f)) fail(`/${posix(relative(dist, f))}: notebooks must stay out of the website build`);
+const nbDir = join(root, 'notebooks');
+const epDir = join(root, 'src', 'content', 'episodes');
+for (const name of readdirSync(epDir).filter((n) => n.endsWith('.md'))) {
+  const fm = readFileSync(join(epDir, name), 'utf8').split(/^---$/m)[1] ?? '';
+  const file = fm.match(/^notebook:\s*\n\s+file:\s*'?([^'\n]+)'?/m)?.[1];
+  if (file && !existsSync(join(nbDir, file))) fail(`episodes/${name}: notebook ${file} is not in notebooks/`);
+}
+if (existsSync(nbDir)) {
+  for (const name of readdirSync(nbDir).filter((n) => n.endsWith('.ipynb'))) {
+    const text = readFileSync(join(nbDir, name), 'utf8');
+    try {
+      JSON.parse(text);
+    } catch (e) {
+      fail(`notebooks/${name}: not valid JSON (${e.message})`);
+    }
+    if (/[A-Z]:\\\\Users|\/Users\/|\/home\//.test(text)) fail(`notebooks/${name}: contains a local file path`);
+    for (const m of text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)) fail(`notebooks/${name}: email address: ${m[0].replace(/^(.).*@/, '$1***@')}`);
+  }
+}
+
 /* ------------------------------------------------------------------ analytics */
 const anyHtml = htmlFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
 const gaSet = /^G-[A-Z0-9]{4,}$/i.test(process.env.PUBLIC_GA4_ID ?? '');

@@ -112,6 +112,17 @@ const episodes = defineCollection({
     keyword: z.string().optional(),
     campaign: z.string().optional(),
     resource: reference('resources').optional(),
+    /**
+     * The long-form video's Python notebook: a file name inside the repo's notebooks/ folder (not on the website).
+     * The episode page links to it on GitHub and in Google Colab. tests/check-dist.mjs checks the file exists.
+     */
+    notebook: z
+      .object({
+        file: z.string().regex(/^[a-z0-9-]+\.ipynb$/),
+        /** One line on what the code shows. */
+        about: z.string(),
+      })
+      .optional(),
     relatedPrompts: z.array(reference('prompts')).default([]),
     sources: z.array(z.object({ label: z.string(), url: z.string().url() })).default([]),
     quiz: z

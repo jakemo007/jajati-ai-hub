@@ -71,6 +71,17 @@ because none were saved; each prompt page says so instead of inventing one.
 
 Each has a text version from the script, sources, a 3-question quiz, related prompts, and "Mark as completed".
 
+**Code notebooks (from 9 Nov 2026).** The long-form videos come with a Python notebook. It lives in `notebooks/` at the
+repo root, so it is on GitHub but **not** in the website build (Astro ships only `src/` and `public/`). To link one, add
+`notebook: { file, about }` to the episode's front matter. The page then shows an "Open in Google Colab" / "View on
+GitHub" card. Also add a row to `notebooks/README.md`. `tests/check-dist.mjs` fails if:
+
+- a referenced notebook is missing
+- an `.ipynb` reaches `dist/`
+- a notebook contains a local file path or an email address
+
+Episode 1 has its notebook: `ep1-tokens-explained.ipynb`.
+
 ## Coming Soon topics (listed on `/episodes/`, no pages)
 
 1. AI Agents (promised at the end of Episode 5, shown as "Next up")

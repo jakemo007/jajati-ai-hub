@@ -28,6 +28,17 @@ export const SOCIAL = {
 } as const;
 
 /**
+ * The public GitHub repository. Episode notebooks live in its notebooks/ folder: they are NOT part of the website
+ * build (Astro only ships src/ and public/), so the site links to GitHub and to Google Colab instead.
+ */
+export const REPO = {
+  url: 'https://github.com/jakemo007/jajati-ai-hub',
+  slug: 'jakemo007/jajati-ai-hub',
+  branch: 'main',
+  notebooksDir: 'notebooks',
+} as const;
+
+/**
  * Contact details. The email is intentionally empty until you choose a public address.
  * When it is empty, the contact page points people to Instagram and YouTube instead.
  */

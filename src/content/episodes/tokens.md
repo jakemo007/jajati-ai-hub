@@ -11,6 +11,9 @@ published: 2026-10-30
 videos:
   youtube: 'https://www.youtube.com/shorts/rBdvln_vaME'
 campaign: ep01_tokens
+notebook:
+  file: 'ep1-tokens-explained.ipynb'
+  about: 'Video ka har number isi notebook se aaya: English 5 tokens, Hindi 8, purane tokenizer par 24, aur BPE khud likh ke.'
 relatedPrompts: [role-context-task-format, step-by-step-prompt]
 sources:
   - label: 'OpenAI tiktoken (the open-source tokenizer used for the counts below)'

@@ -1,0 +1,43 @@
+---
+import Code from '@lucide/astro/icons/code';
+import Play from '@lucide/astro/icons/play';
+import { notebookLinks } from '../utils/urls';
+
+interface Props {
+  /** File name inside the repo's notebooks/ folder. */
+  file: string;
+  about: string;
+  /** Analytics params, e.g. episode_id and episode_title. */
+  track?: Record<string, string>;
+}
+const { file, about, track = {} } = Astro.props;
+const links = notebookLinks(file);
+---
+
+<aside class="card mt-10 border-cyan/40 p-5" aria-labelledby="notebook-title" data-section="notebook">
+  <p class="eyebrow">Code notebook for the full video</p>
+  <h2 id="notebook-title" class="mt-1 text-xl font-bold">Khud chala ke dekho (Python)</h2>
+  <p class="mt-1 text-muted">
+    {about} Google Colab mein free chalta hai, kuch install nahi karna. Har cell ko upar se neeche chalao (Shift + Enter).
+  </p>
+  <div class="mt-4 flex flex-wrap gap-2">
+    <a
+      href={links.colab}
+      rel="noopener"
+      class="btn btn-primary btn-small"
+      data-track="notebook_colab_click"
+      data-track-params={JSON.stringify({ ...track, notebook: file })}
+    >
+      <Play size={18} aria-hidden="true" /> Open in Google Colab
+    </a>
+    <a
+      href={links.github}
+      rel="noopener"
+      class="btn btn-secondary btn-small"
+      data-track="notebook_github_click"
+      data-track-params={JSON.stringify({ ...track, notebook: file })}
+    >
+      <Code size={18} aria-hidden="true" /> View on GitHub
+    </a>
+  </div>
+</aside>
