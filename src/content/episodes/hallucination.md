@@ -14,6 +14,9 @@ videos:
 keyword: SACH
 campaign: ep03_hallucination
 resource: ai-hallucination-cheatsheet
+notebook:
+  file: 'ep3-hallucination-explained.ipynb'
+  about: 'Ek chhota AI khud banao: 6 sach sentences se seekhta hai, phir Australia ki rajdhani poochho aur dekho woh confidence se Delhi kyun bolta hai.'
 relatedPrompts: [say-i-dont-know-prompt, source-for-every-fact-prompt, answer-only-from-document-prompt]
 sources:
   - label: 'OpenAI (2025), "Why language models hallucinate"'

@@ -12,6 +12,9 @@ videos:
   youtube: 'https://www.youtube.com/shorts/Pko5jMeTMHE'
   instagram: 'https://www.instagram.com/reel/DfPy2BvtGLI/'
 campaign: ep02_context_window
+notebook:
+  file: 'ep2-context-window-explained.ipynb'
+  about: 'Video ka har number isi notebook se aaya: 6 messages ki chat 83 tokens, har turn par poori chat dobara (kul 299), aur 128,000 tokens ki desk = lagbhag 373 pages.'
 relatedPrompts: [role-context-task-format, answer-only-from-document-prompt]
 sources:
   - label: 'Liu et al. (2023), "Lost in the Middle: How Language Models Use Long Contexts"'

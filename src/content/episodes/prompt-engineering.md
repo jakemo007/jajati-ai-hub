@@ -14,6 +14,9 @@ videos:
 keyword: PROMPT
 campaign: ep05_prompting
 resource: chatgpt-prompt-cheatsheet
+notebook:
+  file: 'ep5-prompt-engineering-explained.ipynb'
+  about: 'Gin ke dekho: "Resume bana do" AI ke liye 2,592 guess chhodta hai. Role, Context, Task, Format jodo, to sirf 1.'
 relatedPrompts: [role-context-task-format, chatgpt-resume-prompt, show-an-example-prompt, step-by-step-prompt]
 sources:
   - label: 'OpenAI, Prompt engineering guide'

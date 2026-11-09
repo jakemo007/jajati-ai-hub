@@ -14,6 +14,9 @@ videos:
 keyword: RAG
 campaign: ep04_rag
 resource: rag-notebooklm-cheatsheet
+notebook:
+  file: 'ep4-rag-explained.ipynb'
+  about: 'Mini RAG plain Python mein: handbook ko chunks mein kaato, words ko numbers banao, cosine se search karo, aur jawab source ke saath do.'
 relatedPrompts: [answer-only-from-document-prompt, source-for-every-fact-prompt]
 sources:
   - label: 'Lewis et al. (2020), "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" (Facebook AI Research)'

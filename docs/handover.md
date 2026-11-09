@@ -80,7 +80,9 @@ GitHub" card. Also add a row to `notebooks/README.md`. `tests/check-dist.mjs` fa
 - an `.ipynb` reaches `dist/`
 - a notebook contains a local file path or an email address
 
-Episode 1 has its notebook: `ep1-tokens-explained.ipynb`.
+Episodes 1 to 5 link their notebooks (`ep1-tokens-explained.ipynb` to `ep5-prompt-engineering-explained.ipynb`).
+`ep6-ai-agents-explained.ipynb` is in `notebooks/` and the README, but `ai-agents.md` is still `coming-soon`, so add its
+`notebook:` front matter when that page is published.
 
 ## Coming Soon topics (listed on `/episodes/`, no pages)
 
