@@ -4,7 +4,7 @@ description: 'A ChatGPT prompt for 3 short Hinglish Instagram captions for your 
 category: business-marketing
 tools: [chatgpt]
 difficulty: Beginner
-prompt: 'Tum ek social media expert ho. Mera chhota business hai: [kya bechte ho]. Festival offer ke liye 3 Instagram captions likho. Har caption 2 lines ka, Hinglish mein, ek call-to-action ke saath.'
+prompt: 'Tum ek social media expert ho. Mera chhota business hai: [kya bechte ho]. Festival offer ke liye 3 Instagram captions likho. Har caption 2 lines ka, Hinglish mein, ek call-to-action ke saath, aur 3 hashtags. Emoji thode rakho, zyada nahi.'
 problem: 'You run a small shop and need festival-offer captions fast, without hiring anyone.'
 placeholders:
   - token: '[kya bechte ho]'

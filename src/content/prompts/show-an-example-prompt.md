@@ -4,7 +4,7 @@ description: 'Bonus trick 1 from the PROMPT sheet. End your prompt with "Is styl
 category: prompt-engineering
 tools: [chatgpt, any-chat-ai]
 difficulty: Beginner
-prompt: 'Is style mein likho: [apna pasandida example paste karo]'
+prompt: 'Is style mein likho: [apna pasandida example paste karo]. Example ka tone, sentence ki lambai aur shabd chunav copy karo. Pehle ek line mein batao ki tumne style kya samjhi. Phir main jo topic doon, uspar likho.'
 problem: 'The answer is correct, but it does not sound like you, your brand or your office.'
 placeholders:
   - token: '[apna pasandida example paste karo]'

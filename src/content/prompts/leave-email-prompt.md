@@ -4,7 +4,7 @@ description: 'A ChatGPT prompt for a polite, short leave email with a subject li
 category: productivity
 tools: [chatgpt]
 difficulty: Beginner
-prompt: 'Tum ek professional communication coach ho. Mujhe manager ko 2 din ki chhutti ka email bhejna hai, wajah: [wajah]. Polite aur short email likho, subject line ke saath, 5 lines se kam.'
+prompt: 'Tum ek professional communication coach ho. Mujhe manager ko 2 din ki chhutti ka email bhejna hai, wajah: [wajah]. Polite aur short email likho. Pehle subject line do, phir email body, 5 lines se kam. Kaam ka handover kaise hoga, ye ek line mein jodo. Tone formal ho, lekin robotic nahi.'
 problem: 'Writing a formal leave email takes too long, or comes out too casual or too long.'
 placeholders:
   - token: '[wajah]'

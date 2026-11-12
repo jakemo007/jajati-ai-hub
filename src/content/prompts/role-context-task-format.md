@@ -4,7 +4,7 @@ description: 'The fill-in template behind every prompt on the PROMPT sheet. Tell
 category: prompt-engineering
 tools: [chatgpt, any-chat-ai]
 difficulty: Beginner
-prompt: 'Tum [ROLE] ho. [CONTEXT: main kaun hoon, situation kya hai]. [TASK: exactly kya chahiye]. [FORMAT: bullets, table, ya kitne words].'
+prompt: 'Tum [ROLE] ho. [CONTEXT: main kaun hoon, situation kya hai]. [TASK: exactly kya chahiye]. [FORMAT: bullets, table, ya kitne words]. Jo jaankari maine nahi di, uska andaaza mat lagao. Pehle mujhse poochho.'
 problem: 'A one-line prompt like "resume bana do" gets a generic answer, because AI has to guess everything you did not say.'
 placeholders:
   - token: '[ROLE]'

@@ -4,7 +4,7 @@ description: 'ChatGPT asks you 5 interview questions one at a time and gives fee
 category: interview-prep
 tools: [chatgpt]
 difficulty: Intermediate
-prompt: 'Tum ek senior interviewer ho. Mera [role] ka interview hai, [X] saal ka experience hai. Mujhse 5 sawal poochho, ek-ek karke. Har jawab ke baad feedback do: kya achha tha, kya sudharna hai.'
+prompt: 'Tum ek senior interviewer ho. Mera [role] ka interview hai, [X] saal ka experience hai. Mujhse 5 sawal poochho, ek-ek karke. Har jawab ke baad feedback do: kya achha tha, kya sudharna hai, aur ek better jawab ka example. Agla sawal tab tak mat poochho jab tak main jawab na doon.'
 problem: 'You have an interview coming up and nobody to practise with.'
 placeholders:
   - token: '[role]'

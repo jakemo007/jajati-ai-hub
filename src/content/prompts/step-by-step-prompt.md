@@ -5,7 +5,10 @@ description: 'Bonus trick 2 from the PROMPT sheet. On a hard math or logic quest
 category: prompt-engineering
 tools: [chatgpt, any-chat-ai]
 difficulty: Beginner
-prompt: 'Step by step socho.'
+prompt: '[sawal yahan likho] Step by step socho. Pehle har step alag line mein likho, phir final answer alag se do. Har step ke baad check karo ki wo sahi hai ya nahi.'
+placeholders:
+  - token: '[sawal yahan likho]'
+    meaning: 'Your maths or logic question, word for word.'
 problem: 'AI jumps straight to an answer on a multi-step math or logic question, and the answer is wrong.'
 source:
   label: 'PROMPT cheat sheet, bonus trick 2 (AI Explained Episode 5)'

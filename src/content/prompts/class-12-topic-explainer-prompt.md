@@ -5,7 +5,7 @@ description: 'A ChatGPT prompt that explains a tough class 12 topic with a real-
 category: education
 tools: [chatgpt]
 difficulty: Beginner
-prompt: 'Tum ek patient teacher ho. Main class 12 mein hoon aur mujhe [topic] samajh nahi aaya. Ise ek real-life example se samjhao. 5 bullet points, phir 3 practice sawal, answers sabse last mein.'
+prompt: 'Tum ek patient teacher ho. Main class 12 mein hoon aur mujhe [topic] samajh nahi aaya. Ise ek real-life example se samjhao, bina mushkil jargon ke. Pehle 5 bullet points mein main idea likho. Phir 3 practice sawal do. Answers sabse last mein, alag heading ke neeche.'
 problem: 'A textbook explanation did not click, and you want a simpler one plus a way to check you really understood.'
 placeholders:
   - token: '[topic]'

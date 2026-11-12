@@ -4,7 +4,7 @@ description: 'Turn your projects into a 1-page resume with ChatGPT. The resume p
 category: resume-career
 tools: [chatgpt]
 difficulty: Beginner
-prompt: 'Tum 10 saal ke HR expert ho. Main fresher hoon, Python aur SQL aata hai, data analyst job chahiye. Mere projects ke basis par 1 page ka resume banao, projects sabse upar. Bullet points mein, har point 10 words se kam. Mere projects: [yahan likho]'
+prompt: 'Tum 10 saal ke HR expert ho. Main fresher hoon, Python aur SQL aata hai, data analyst job chahiye. Mere projects ke basis par 1 page ka resume banao, projects sabse upar. Har project ke liye likho: kya banaya, kaun se tools use kiye, aur result kya mila (agar number hai to zaroor likho). Bullet points mein, har point 10 words se kam. Skills ko alag section mein rakho. Mere projects: [yahan likho]'
 problem: 'Typing "resume bana do" gives a generic resume that could belong to anyone.'
 placeholders:
   - token: '[yahan likho]'
