@@ -20,7 +20,7 @@ added: 2026-11-06
 featured: true
 order: 3
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, office-email]
 relatedPrompts: [role-context-task-format, show-an-example-prompt]
 ---
 

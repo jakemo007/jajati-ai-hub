@@ -21,7 +21,8 @@ const popular = prompts.filter((p) => p.data.featured).slice(0, 6);
 const episodes = await getEpisodes();
 const published = episodes.filter((e) => e.data.status === 'published');
 const latestEpisodes = [...published].reverse().slice(0, 3);
-const nextUp = episodes.find((e) => e.id === 'ai-agents');
+// The Coming Soon topic with the lowest `order` (getEpisodes sorts them that way).
+const nextUp = episodes.find((e) => e.data.status === 'coming-soon');
 const posts = (await getBlogPosts()).slice(0, 3);
 
 const categories = (Object.keys(PROMPT_CATEGORIES) as PromptCategoryId[])

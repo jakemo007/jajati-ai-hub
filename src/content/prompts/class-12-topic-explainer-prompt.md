@@ -21,7 +21,7 @@ added: 2026-11-06
 featured: true
 order: 4
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering, hallucination]
+relatedEpisodes: [prompt-engineering, hallucination, ai-se-padhai]
 relatedPrompts: [explain-in-3-steps, quiz-me-prompt]
 ---
 

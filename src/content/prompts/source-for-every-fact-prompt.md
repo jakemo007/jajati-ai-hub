@@ -11,7 +11,7 @@ source:
 added: 2026-11-03
 order: 14
 resource: ai-hallucination-cheatsheet
-relatedEpisodes: [hallucination]
+relatedEpisodes: [hallucination, temperature]
 relatedPrompts: [say-i-dont-know-prompt, answer-only-from-document-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/YdcDpEGoYP0'

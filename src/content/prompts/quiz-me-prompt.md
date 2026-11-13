@@ -13,7 +13,7 @@ source:
   note: 'Text taken from the video''s script file. The spoken wording in the video may differ slightly.'
 added: 2026-10-18
 order: 11
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, ai-se-padhai]
 relatedPrompts: [explain-in-3-steps, class-12-topic-explainer-prompt]
 ---
 

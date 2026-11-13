@@ -82,4 +82,5 @@ await ogDefault();
 await ogSheet('chatgpt-prompt-cheatsheet', 'prompt-5-prompts-1.png', 'FREE CHEAT SHEET · KEYWORD: PROMPT', ['5 Copy-Paste', 'ChatGPT Prompts'], 'Role · Context · Task · Format');
 await ogSheet('ai-hallucination-cheatsheet', 'sach-ai-jhooth-cheatsheet.png', 'FREE CHEAT SHEET · KEYWORD: SACH', ['AI Ka Jhooth', 'Pakdo'], 'Hallucination cheat sheet, 1 page');
 await ogSheet('rag-notebooklm-cheatsheet', 'rag-notebooklm-cheatsheet.png', 'FREE CHEAT SHEET · KEYWORD: RAG', ['RAG +', 'NotebookLM'], 'RAG in 4 steps, try it free');
+await ogSheet('system-prompt-cheatsheet', 'system-5-prompts-1.png', 'FREE CHEAT SHEET · KEYWORD: SYSTEM', ['5 Copy-Paste', 'System Prompts'], 'DSA mentor · Mock interviewer · Code reviewer');
 console.log('icons and og images written to public/');

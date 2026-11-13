@@ -14,7 +14,7 @@ source:
 added: 2026-11-03
 order: 15
 resource: ai-hallucination-cheatsheet
-relatedEpisodes: [hallucination, rag]
+relatedEpisodes: [hallucination, rag, embeddings]
 relatedPrompts: [say-i-dont-know-prompt, source-for-every-fact-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/YdcDpEGoYP0'

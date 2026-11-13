@@ -5,4 +5,6 @@ description: 'Where RAG is useful day to day: chatting with your notes, policies
 status: coming-soon
 category: rag-llms
 difficulty: Intermediate
+note: 'Promised at the end of Episode 13. Next up.'
+order: 1
 ---

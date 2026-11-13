@@ -18,6 +18,7 @@ export const SHORT_LINKS = {
   '/prompt': '/free-resources/chatgpt-prompt-cheatsheet/',
   '/sach': '/free-resources/ai-hallucination-cheatsheet/',
   '/rag': '/free-resources/rag-notebooklm-cheatsheet/',
+  '/system': '/free-resources/system-prompt-cheatsheet/',
 };
 
 // The blog index is noindex while it has no published posts, so it stays out of the sitemap too.

@@ -15,7 +15,7 @@ source:
 added: 2026-11-06
 order: 7
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, business-post]
 relatedPrompts: [role-context-task-format, festival-offer-captions-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/kHaRG06jrrM'

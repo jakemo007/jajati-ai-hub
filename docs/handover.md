@@ -59,7 +59,7 @@ and `.env*`, and `npm run check:dist` fails if a DM, ledger or `.env` file, an e
 ★ = featured (shown under Popular). Every prompt text is taken from the sheets or scripts. No example outputs are shown,
 because none were saved; each prompt page says so instead of inventing one.
 
-## Published episodes (5)
+## Published episodes (11)
 
 | # | Page `/episodes/<slug>/` | Date | YouTube | Instagram | Sheet |
 | --- | --- | --- | --- | --- | --- |
@@ -68,6 +68,17 @@ because none were saved; each prompt page says so instead of inventing one.
 | 3 | `hallucination` | 3 Nov 2026 | YdcDpEGoYP0 | DfT0SVONTW6 | SACH |
 | 4 | `rag` | 5 Nov 2026 | 0EZYoUYOtM8 | DfYw8uHChUf | RAG |
 | 5 | `prompt-engineering` | 6 Nov 2026 | kHaRG06jrrM | DfaHvKvixjC | PROMPT |
+| 6 | `ai-agents` | not set | not added | not added | none (AGENT keyword) |
+| 7 | `interview-prep` | not set | not added | not added | PROMPT |
+| 8 | `office-email` | not set | not added | not added | PROMPT |
+| 9 | `ai-se-padhai` | not set | not added | not added | PROMPT |
+| 10 | `business-post` | not set | not added | not added | PROMPT |
+| 11 | `temperature` | not set | not added | not added | none (comment question, no keyword) |
+| 12 | `system-vs-user-prompts` (title "System Prompt") | not set | not added | not added | SYSTEM (sheet page `system-prompt-cheatsheet`, short link `/system`) |
+| 13 | `embeddings` | not set | not added | not added | none (comment question, no keyword) |
+
+Episodes 6 to 13 have pages (text version, notebook, quiz, sources) but no `published:` date or `videos:` links yet.
+Add them to the front matter once the Reels and YouTube videos are live; never add a link that is not real.
 
 Each has a text version from the script, sources, a 3-question quiz, related prompts, and "Mark as completed".
 
@@ -80,18 +91,26 @@ GitHub" card. Also add a row to `notebooks/README.md`. `tests/check-dist.mjs` fa
 - an `.ipynb` reaches `dist/`
 - a notebook contains a local file path or an email address
 
-Episodes 1 to 5 link their notebooks (`ep1-tokens-explained.ipynb` to `ep5-prompt-engineering-explained.ipynb`).
-`ep6-ai-agents-explained.ipynb` is in `notebooks/` and the README, but `ai-agents.md` is still `coming-soon`, so add its
-`notebook:` front matter when that page is published.
+Episodes 1 to 13 link their notebooks (`ep1-tokens-explained.ipynb` to `ep13-embeddings-explained.ipynb`).
+
+**SYSTEM sheet (12 Nov 2026).** A fourth free resource, `system-prompt-cheatsheet` (5 system prompts for students and
+engineers), with files in `public/resources/system-5-prompts*`, previews in `src/assets/resources/`, the short link
+`/system` (in `astro.config.mjs` and `public/_redirects`) and the image `public/og/system-prompt-cheatsheet.png`
+(`npm run og`). The Instagram keyword SYSTEM points at it, so the page must be live before a "Comment SYSTEM" caption
+is posted.
+
+**Audience (12 Nov 2026).** The series is for college students, fresh graduates, working professionals, engineers and
+AI engineers. Episode 12 was the first one written under that rule (a student building a chatbot project). Episodes 9
+(`ai-se-padhai`) and 10 (`business-post`) were written for other people (a school child, a shop owner). Whether to post
+or remake their videos is the owner's decision; it was still open on 12 Nov.
 
 ## Coming Soon topics (listed on `/episodes/`, no pages)
 
-1. AI Agents (promised at the end of Episode 5, shown as "Next up")
-2. Temperature
-3. System Instructions vs User Prompts
-4. Embeddings
-5. LLM Fundamentals (How Large Language Models Work)
-6. Practical RAG Applications
+1. Practical RAG Applications (promised at the end of Episode 13, shown as "Next up": `order: 1`)
+2. LLM Fundamentals (How Large Language Models Work)
+
+The home page and `/start/` show the Coming Soon topic with the lowest `order` as "Next up", so moving that field is
+all it takes to change it.
 
 ## What you need to do
 

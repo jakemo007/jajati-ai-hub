@@ -12,7 +12,7 @@ added: 2026-11-03
 featured: true
 order: 13
 resource: ai-hallucination-cheatsheet
-relatedEpisodes: [hallucination]
+relatedEpisodes: [hallucination, temperature, system-vs-user-prompts]
 relatedPrompts: [source-for-every-fact-prompt, answer-only-from-document-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/YdcDpEGoYP0'

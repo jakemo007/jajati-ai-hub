@@ -24,7 +24,7 @@ added: 2026-11-06
 featured: true
 order: 1
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, system-vs-user-prompts]
 relatedPrompts: [chatgpt-resume-prompt, show-an-example-prompt, step-by-step-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/kHaRG06jrrM'

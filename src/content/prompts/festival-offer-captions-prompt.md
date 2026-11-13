@@ -18,7 +18,7 @@ added: 2026-11-06
 featured: true
 order: 6
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, business-post]
 relatedPrompts: [show-an-example-prompt, video-script-structure-prompt]
 ---
 

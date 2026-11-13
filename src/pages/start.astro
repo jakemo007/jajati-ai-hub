@@ -10,13 +10,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EpisodeCard from '../components/EpisodeCard.astro';
 import VideoLinks from '../components/VideoLinks.astro';
 import { SOCIAL } from '../data/site';
-import { getPrompts, getPublishedEpisodes, getResources } from '../utils/content';
+import { getEpisodes, getPrompts, getPublishedEpisodes, getResources } from '../utils/content';
 import { paths } from '../utils/urls';
 
 const resources = await getResources();
 const prompts = (await getPrompts()).filter((p) => p.data.featured).slice(0, 6);
 const episodes = await getPublishedEpisodes();
 const latest = episodes[episodes.length - 1];
+const nextUp = (await getEpisodes()).find((e) => e.data.status === 'coming-soon');
 const formatsOf = (r: (typeof resources)[number]) => [...new Set(r.data.files.map((f) => f.format))].join(' + ');
 ---
 
@@ -95,7 +96,11 @@ const formatsOf = (r: (typeof resources)[number]) => [...new Set(r.data.files.ma
             />
           </div>
           <p class="mt-3 text-sm text-muted">
-            Next episode: <strong class="text-text">AI Agents</strong> (coming soon).{' '}
+            {nextUp && (
+              <>
+                Next episode: <strong class="text-text">{nextUp.data.title}</strong> (coming soon).{' '}
+              </>
+            )}
             <a href="/episodes/">All episodes</a>
           </p>
         </section>
