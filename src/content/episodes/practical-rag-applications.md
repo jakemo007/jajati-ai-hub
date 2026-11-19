@@ -34,7 +34,7 @@ quiz:
     explain: 'Notebook mein "CEO kaun hai" ka best score 1 aaya, limit 2 se kam. Limit apne docs par test karke chuno.'
 ---
 
-> **Short mein:** Interview mein poochha: "tumhare RAG bot ne galat jawab diya, to pehle kya dekhoge?" **Pehle retrieved chunks print karo, prompt baad mein.** Model wahi padhta hai jo search use deta hai.
+> **Short mein:** Bot galat nahi tha, use aadha sentence mila. Interview mein poochha: "tumhare RAG bot ne galat jawab diya, to pehle kya dekhoge?" **Pehle retrieved chunks print karo, prompt baad mein.** Model wahi padhta hai jo search use deta hai.
 
 ## Jawab galat kyun
 
@@ -62,7 +62,9 @@ Sawal: "Resume ki last date kab hai". Notebook ka `score()` ginta hai ki sawal k
 | 3 | College FAQ notes Resume ki last |
 | 2 | din Friday hai Join karne ki |
 
-15 December kisi mein nahi. Model ko ye chunks milenge, to wo guess karega ya bolega "pata nahi". Isme model ki galti nahi hai.
+15 December kisi mein nahi. Model ko ye chunks milenge, to wo guess karega ya bolega "pata nahi". Yahan galti search ki hai.
+
+Har galti chunks ki nahi hoti. Par pehle yahin dekho, ye sabse aasan check hai.
 
 **Pehla niyam:** jawab galat ho, to prompt badalne se pehle retrieved chunks print karo.
 
