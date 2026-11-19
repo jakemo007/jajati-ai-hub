@@ -20,5 +20,6 @@ Open one in Google Colab (free, nothing to install), then run each cell from top
 | 11. Temperature: AI har baar alag jawab kyun deta hai? | [ep11-temperature-explained.ipynb](ep11-temperature-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep11-temperature-explained.ipynb) |
 | 12. System Prompt: bot ka pehla message tum likhte ho | [ep12-system-prompt-explained.ipynb](ep12-system-prompt-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep12-system-prompt-explained.ipynb) |
 | 13. Embeddings: AI meaning ko numbers mein kaise badalta hai? | [ep13-embeddings-explained.ipynb](ep13-embeddings-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep13-embeddings-explained.ipynb) |
+| 14. Practical RAG: bot ka jawab galat? Pehle chunks dekho | [ep14-practical-rag-explained.ipynb](ep14-practical-rag-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep14-practical-rag-explained.ipynb) |
 
 These files are not part of the website build. The site links here from each episode page.

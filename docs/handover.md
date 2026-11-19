@@ -91,7 +91,12 @@ GitHub" card. Also add a row to `notebooks/README.md`. `tests/check-dist.mjs` fa
 - an `.ipynb` reaches `dist/`
 - a notebook contains a local file path or an email address
 
-Episodes 1 to 13 link their notebooks (`ep1-tokens-explained.ipynb` to `ep13-embeddings-explained.ipynb`).
+Episodes 1 to 14 link their notebooks (`ep1-tokens-explained.ipynb` to `ep14-practical-rag-explained.ipynb`).
+
+**Episode 14, Practical RAG (19 Nov 2026).** The old Coming Soon page `practical-rag-applications.md` is now the published
+Episode 14 page (same URL). It has the notebook, 3 sources (OpenAI retrieval guide, OpenAI file search, Anthropic
+Contextual Retrieval), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it). It has no `videos:` or
+`published:` yet: the video is not made, and links are added only when real ones exist. No comment keyword and no sheet.
 
 **SYSTEM sheet (12 Nov 2026).** A fourth free resource, `system-prompt-cheatsheet` (5 system prompts for students and
 engineers), with files in `public/resources/system-5-prompts*`, previews in `src/assets/resources/`, the short link
@@ -106,7 +111,8 @@ or remake their videos is the owner's decision; it was still open on 12 Nov.
 
 ## Coming Soon topics (listed on `/episodes/`, no pages)
 
-1. Practical RAG Applications (promised at the end of Episode 13, shown as "Next up": `order: 1`)
+1. Resume Bullets from a Project (promised at the end of Episode 14, shown as "Next up": `order: 1`; the topic comes from the
+   14 Nov posting schedule, so delete the page or move `order` if the owner picks a different Episode 15)
 2. LLM Fundamentals (How Large Language Models Work)
 
 The home page and `/start/` show the Coming Soon topic with the lowest `order` as "Next up", so moving that field is
