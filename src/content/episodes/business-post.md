@@ -7,6 +7,10 @@ description: 'AI posts sound like a big company ad. Give AI your business, one o
 status: published
 category: practical-ai
 difficulty: Beginner
+published: 2026-11-15
+videos:
+  youtube: 'https://www.youtube.com/shorts/B9kuBRC5vRU'
+  instagram: 'https://www.instagram.com/reel/Dfw7w7WCEHz/'
 keyword: PROMPT
 campaign: ep10_business
 resource: chatgpt-prompt-cheatsheet

@@ -7,6 +7,10 @@ description: 'Building a chatbot? The first message is yours, not the user''s. W
 status: published
 category: prompt-engineering
 difficulty: Intermediate
+published: 2026-11-18
+videos:
+  youtube: 'https://www.youtube.com/shorts/xPSu8xtzFlM'
+  instagram: 'https://www.instagram.com/reel/Df4YrwuCgk1/'
 campaign: ep12_system_prompt
 resource: system-prompt-cheatsheet
 notebook:

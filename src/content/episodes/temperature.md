@@ -7,6 +7,10 @@ description: 'Same question, different answer? AI picks each next word like a lo
 status: published
 category: ai-fundamentals
 difficulty: Beginner
+published: 2026-11-16
+videos:
+  youtube: 'https://www.youtube.com/shorts/WhYae_Y_VYc'
+  instagram: 'https://www.instagram.com/reel/DfzTsnWCd6b/'
 campaign: ep11_temperature
 notebook:
   file: 'ep11-temperature-explained.ipynb'

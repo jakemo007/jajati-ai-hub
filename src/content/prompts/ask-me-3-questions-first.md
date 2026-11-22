@@ -17,7 +17,7 @@ source:
 added: 2026-10-27
 featured: true
 order: 9
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, resume-bullets-from-projects, function-calling]
 relatedPrompts: [role-context-task-format, interview-practice-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/7mAxcYG8ypY'

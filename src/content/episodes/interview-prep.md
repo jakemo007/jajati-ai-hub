@@ -7,6 +7,10 @@ description: 'Stop memorising 50 questions. Make AI your interviewer with a 3-li
 status: published
 category: practical-ai
 difficulty: Beginner
+published: 2026-11-12
+videos:
+  youtube: 'https://www.youtube.com/shorts/uSPdfN27xfE'
+  instagram: 'https://www.instagram.com/reel/DfpWhs4C8_z/'
 keyword: PROMPT
 campaign: ep07_interview
 resource: chatgpt-prompt-cheatsheet

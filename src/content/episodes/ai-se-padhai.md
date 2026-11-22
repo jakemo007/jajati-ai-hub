@@ -7,6 +7,10 @@ description: 'Copied answers from AI do not stick. Ask for a real-life example a
 status: published
 category: practical-ai
 difficulty: Beginner
+published: 2026-11-13
+videos:
+  youtube: 'https://www.youtube.com/shorts/-kCmTOEX-Dc'
+  instagram: 'https://www.instagram.com/reel/Dfryfo8i3qc/'
 keyword: PROMPT
 campaign: ep09_padhai
 resource: chatgpt-prompt-cheatsheet

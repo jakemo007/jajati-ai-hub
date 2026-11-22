@@ -7,6 +7,10 @@ description: 'A chatbot tells you the steps, an agent does them. The Plan, Tools
 status: published
 category: ai-agents
 difficulty: Intermediate
+published: 2026-11-10
+videos:
+  youtube: 'https://www.youtube.com/shorts/bmTEGBynLFA'
+  instagram: 'https://www.instagram.com/reel/DfjUUO-iIoZ/'
 keyword: AGENT
 campaign: ep06_agents
 notebook:

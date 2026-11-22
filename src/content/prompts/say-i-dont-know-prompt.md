@@ -12,7 +12,7 @@ added: 2026-11-03
 featured: true
 order: 13
 resource: ai-hallucination-cheatsheet
-relatedEpisodes: [hallucination, temperature, system-vs-user-prompts, practical-rag-applications]
+relatedEpisodes: [hallucination, temperature, system-vs-user-prompts, practical-rag-applications, resume-bullets-from-projects, llm-fundamentals, evals, function-calling]
 relatedPrompts: [source-for-every-fact-prompt, answer-only-from-document-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/YdcDpEGoYP0'

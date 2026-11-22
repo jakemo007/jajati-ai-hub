@@ -34,7 +34,7 @@ quiz:
     explain: 'Notebook mein "CEO kaun hai" ka best score 1 aaya, limit 2 se kam. Limit apne docs par test karke chuno.'
 ---
 
-> **Short mein:** Bot galat nahi tha, use aadha sentence mila. Interview mein poochha: "tumhare RAG bot ne galat jawab diya, to pehle kya dekhoge?" **Pehle retrieved chunks print karo, prompt baad mein.** Model wahi padhta hai jo search use deta hai.
+> **Short mein:** Resume wala bot galat bola? Prompt ya model? Dono baad mein. Interview mein poochha: "tumhare RAG bot ne galat jawab diya, to pehle kya dekhoge?" **Pehle retrieved chunks print karo, prompt baad mein.** Model wahi padhta hai jo search use deta hai.
 
 ## Jawab galat kyun
 

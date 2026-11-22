@@ -7,6 +7,10 @@ description: '"Chhutti ka email likho" gets you an 82-word essay full of blank b
 status: published
 category: practical-ai
 difficulty: Beginner
+published: 2026-11-11
+videos:
+  youtube: 'https://www.youtube.com/shorts/N58KBO9GeqA'
+  instagram: 'https://www.instagram.com/reel/DfmdoH2iFFi/'
 keyword: PROMPT
 campaign: ep08_email
 resource: chatgpt-prompt-cheatsheet

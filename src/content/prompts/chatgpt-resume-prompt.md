@@ -18,7 +18,7 @@ added: 2026-11-06
 featured: true
 order: 2
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering]
+relatedEpisodes: [prompt-engineering, resume-bullets-from-projects]
 relatedPrompts: [interview-practice-prompt, role-context-task-format]
 video:
   youtube: 'https://www.youtube.com/shorts/kHaRG06jrrM'

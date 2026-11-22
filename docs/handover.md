@@ -91,12 +91,49 @@ GitHub" card. Also add a row to `notebooks/README.md`. `tests/check-dist.mjs` fa
 - an `.ipynb` reaches `dist/`
 - a notebook contains a local file path or an email address
 
-Episodes 1 to 14 link their notebooks (`ep1-tokens-explained.ipynb` to `ep14-practical-rag-explained.ipynb`).
+Episodes 1 to 17 link their notebooks (`ep1-tokens-explained.ipynb` to `ep17-fine-tuning-rag-explained.ipynb`).
 
 **Episode 14, Practical RAG (19 Nov 2026).** The old Coming Soon page `practical-rag-applications.md` is now the published
 Episode 14 page (same URL). It has the notebook, 3 sources (OpenAI retrieval guide, OpenAI file search, Anthropic
 Contextual Retrieval), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it). It has no `videos:` or
 `published:` yet: the video is not made, and links are added only when real ones exist. No comment keyword and no sheet.
+
+**Episode 15, Resume Bullets from a Project (21 Nov 2026).** The old Coming Soon page `resume-bullets-from-projects.md` is
+now the published Episode 15 page (same URL). It has the notebook (a bullet checker: verb, number and method out of 3, and
+any number that is not in the facts; a 20-question test with 18 right), 2 sources (Laszlo Bock's X-Y-Z formula via Auburn
+University, Anthropic's Reduce hallucinations), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it).
+It has no `videos:` or `published:` yet: links are added only when the real uploads exist. No comment keyword and no sheet.
+
+**Episode 16, LLM Fundamentals (21 Nov 2026).** The old Coming Soon page `llm-fundamentals.md` is now the published
+Episode 16 page (same URL). It has the notebook (a toy next-word model: 9 made-up sentences, "your" -> time 50%, help
+33%, reply 17%; it writes "the capital of australia is sydney" at 67/33, and gets canberra once two more sentences are
+added), 5 sources (three Google Machine Learning Crash Course pages, the Claude Help Center on knowledge cutoffs, the
+InstructGPT paper), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it). No `videos:` or
+`published:` yet, no comment keyword and no sheet. The body uses `>` quotes, not code fences (fences break 360 px).
+
+**Episode 17, Fine-tuning ya RAG (22 Nov 2026).** The old Coming Soon page `fine-tuning-vs-rag.md` is now the published
+Episode 17 page (same URL). It has the notebook (two toys and 3 made-up notices: the date changes from 10 to 15 december,
+RAG answers 15 with `[source: notice-1]`, the fine-tune toy says 10 until it is retrained; a checker sorts 6 made-up cases
+into RAG 2, FINE-TUNE 2, RAG + FINE-TUNE 1, PROMPT 1), 4 sources (OpenAI's accuracy guide, Google's fine-tuning page,
+Ovadia et al. 2024, Lewis et al. 2020), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it). No
+`videos:` or `published:` yet, no comment keyword and no sheet. `>` quotes and one table, no code fences.
+
+**Episode 18, Evals (22 Nov 2026).** The old Coming Soon page `evals.md` is now the published Episode 18 page (same
+URL). It has the notebook (a made-up college help-desk with 10 facts and two toy prompts: on the library question the
+friendly v2 looks better, on 10 tests v1 scores 9/10 and v2 6/10; exact match gives v2 0/10; v3 scores 9/10, then 10/10
+once the mess fact is added; a user complaint becomes test 11, 10/11), 4 sources (OpenAI's evaluation best practices,
+Anthropic's develop-tests page, Anthropic Engineering's demystifying evals, Zheng et al. 2023), a 3-question quiz and 3
+related prompts (their `relatedEpisodes` include it). No `videos:` or `published:` yet, no comment keyword and no sheet.
+`>` quotes, no code fences.
+
+**Episode 19, Function calling (22 Nov 2026).** The old Coming Soon page `function-calling.md` is now the published
+Episode 19 page (same URL). It has the notebook (a toy model and two made-up tools, `get_weather` and `book_slot`:
+without tools the toy says it has no live data; with the menu it writes a call for Pune and the log stays empty; the
+code runs it, gets 31 °C and sends it back; a vague description makes the toy pick no tool; `book_slot` refuses "kal"
+because the day must be monday to friday), 3 sources (OpenAI's function calling guide, Anthropic's how tool use works,
+Google's Gemini function calling), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it). No
+`videos:` or `published:` yet, no comment keyword and no sheet. `>` quotes, no code fences. The next topic, MCP, has a
+new Coming Soon page `mcp.md`.
 
 **SYSTEM sheet (12 Nov 2026).** A fourth free resource, `system-prompt-cheatsheet` (5 system prompts for students and
 engineers), with files in `public/resources/system-5-prompts*`, previews in `src/assets/resources/`, the short link
@@ -111,9 +148,7 @@ or remake their videos is the owner's decision; it was still open on 12 Nov.
 
 ## Coming Soon topics (listed on `/episodes/`, no pages)
 
-1. Resume Bullets from a Project (promised at the end of Episode 14, shown as "Next up": `order: 1`; the topic comes from the
-   14 Nov posting schedule, so delete the page or move `order` if the owner picks a different Episode 15)
-2. LLM Fundamentals (How Large Language Models Work)
+1. MCP (`mcp.md`; promised at the end of Episode 19, shown as "Next up": `order: 1`)
 
 The home page and `/start/` show the Coming Soon topic with the lowest `order` as "Next up", so moving that field is
 all it takes to change it.

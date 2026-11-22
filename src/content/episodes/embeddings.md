@@ -7,6 +7,10 @@ description: 'Your bot was asked about salary, the doc said package, and it foun
 status: published
 category: rag-llms
 difficulty: Intermediate
+published: 2026-11-19
+videos:
+  youtube: 'https://www.youtube.com/shorts/pMdZyb5lzTk'
+  instagram: 'https://www.instagram.com/reel/Df7JrypCeNc/'
 campaign: ep13_embeddings
 notebook:
   file: 'ep13-embeddings-explained.ipynb'

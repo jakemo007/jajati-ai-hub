@@ -14,7 +14,7 @@ source:
 added: 2026-11-03
 order: 15
 resource: ai-hallucination-cheatsheet
-relatedEpisodes: [hallucination, rag, embeddings, practical-rag-applications]
+relatedEpisodes: [hallucination, rag, embeddings, practical-rag-applications, fine-tuning-vs-rag]
 relatedPrompts: [say-i-dont-know-prompt, source-for-every-fact-prompt]
 video:
   youtube: 'https://www.youtube.com/shorts/YdcDpEGoYP0'
