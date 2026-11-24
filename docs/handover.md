@@ -135,6 +135,15 @@ Google's Gemini function calling), a 3-question quiz and 3 related prompts (thei
 `videos:` or `published:` yet, no comment keyword and no sheet. `>` quotes, no code fences. The next topic, MCP, has a
 new Coming Soon page `mcp.md`.
 
+**Episode 20, MCP (22 Nov 2026).** The old Coming Soon page `mcp.md` is now the published Episode 20 page (same URL).
+It has the notebook (3 made-up apps and 4 made-up tools: 12 connectors without a standard, 7 with MCP, 16 and 8 with a
+fourth app; a toy weather server answering JSON-RPC style `tools/list` and `tools/call`; one client function the chat
+app and the code editor share; a calendar server that plugs in without changing the app; an approval gate before
+`book_slot`), 4 sources (the MCP specification and its tools page, Anthropic's launch post, OpenAI's MCP and Connectors
+guide), a 3-question quiz and 3 related prompts (their `relatedEpisodes` include it). No `videos:` or `published:`
+yet, no comment keyword and no sheet. `>` quotes, no code fences. The next topic, Prompt injection, has a new Coming
+Soon page `prompt-injection.md`.
+
 **SYSTEM sheet (12 Nov 2026).** A fourth free resource, `system-prompt-cheatsheet` (5 system prompts for students and
 engineers), with files in `public/resources/system-5-prompts*`, previews in `src/assets/resources/`, the short link
 `/system` (in `astro.config.mjs` and `public/_redirects`) and the image `public/og/system-prompt-cheatsheet.png`
@@ -148,7 +157,7 @@ or remake their videos is the owner's decision; it was still open on 12 Nov.
 
 ## Coming Soon topics (listed on `/episodes/`, no pages)
 
-1. MCP (`mcp.md`; promised at the end of Episode 19, shown as "Next up": `order: 1`)
+1. Prompt injection (`prompt-injection.md`; promised at the end of Episode 20, shown as "Next up": `order: 1`)
 
 The home page and `/start/` show the Coming Soon topic with the lowest `order` as "Next up", so moving that field is
 all it takes to change it.

@@ -20,7 +20,7 @@ added: 2026-11-06
 featured: true
 order: 5
 resource: chatgpt-prompt-cheatsheet
-relatedEpisodes: [prompt-engineering, interview-prep, llm-fundamentals, evals, function-calling]
+relatedEpisodes: [prompt-engineering, interview-prep, llm-fundamentals, evals, function-calling, mcp]
 relatedPrompts: [chatgpt-resume-prompt, ask-me-3-questions-first]
 ---
 

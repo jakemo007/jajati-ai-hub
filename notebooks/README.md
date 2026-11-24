@@ -26,5 +26,6 @@ Open one in Google Colab (free, nothing to install), then run each cell from top
 | 17. Fine-tuning ya RAG: kab kaun-sa? | [ep17-fine-tuning-rag-explained.ipynb](ep17-fine-tuning-rag-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep17-fine-tuning-rag-explained.ipynb) |
 | 18. Evals: AI ka jawab sahi hai, ye kaise jaanchein? | [ep18-evals-explained.ipynb](ep18-evals-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep18-evals-explained.ipynb) |
 | 19. Function Calling: AI tool kaise chalata hai? | [ep19-function-calling-explained.ipynb](ep19-function-calling-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep19-function-calling-explained.ipynb) |
+| 20. MCP: AI ko tools se jodne ka standard | [ep20-mcp-explained.ipynb](ep20-mcp-explained.ipynb) | [Open in Colab](https://colab.research.google.com/github/jakemo007/jajati-ai-hub/blob/main/notebooks/ep20-mcp-explained.ipynb) |
 
 These files are not part of the website build. The site links here from each episode page.
